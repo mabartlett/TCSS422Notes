@@ -62,7 +62,7 @@ p code, li code { background-color: #404040; }
 
 .l-large-column { border-color: #404040; }
 
-header { background-image: url("/assets/img/Banner.png"); border-color: #404040; }
+header { background-image: url("Banner.png"); border-color: #404040; }
 
 header h1 { color: #00ff00; text-shadow: 0 0 5px #000000; }
 
