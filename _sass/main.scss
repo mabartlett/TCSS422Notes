@@ -71,6 +71,10 @@ a {
     text-decoration: none;
 }
 
+a:focus {
+    outline: dashed 2px #808080;
+}
+
 .l-flex-container {
     display: flex;
     flex-wrap: wrap;
@@ -115,7 +119,7 @@ nav li a {
 }
 
 header {
-    padding: 2rem 1rem;
+    padding: 2rem;
     border-bottom: 1px solid;
 }
 
@@ -133,6 +137,18 @@ main a {
     text-decoration: underline;
 }
 
+main a:hover {
+    text-decoration: none;
+}
+
+main h1 {
+    
+}
+
+main h2:not(:first-of-type) {
+    margin-top: 4rem;
+}
+
 main p,
 main li {
     text-align: justify;
@@ -141,8 +157,10 @@ main li {
 
 footer {
     font-size: 0.8rem;
+    line-height: 0.9rem;
     padding: 2rem;
     border-top: 1px solid;
+    margin-top: 2rem;
 }
 
 footer a {
