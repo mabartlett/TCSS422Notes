@@ -5,11 +5,20 @@
 <html lang="en-us">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ page.title }}</title>
+        <link rel="stylesheet" href="{{site.url}}/assets/css/styles.css">
     </head>
     <body>
-        {% include navigation.html %}
-        {{ content }}
+        <div class="l-flex-container">
+            <div class="l-small-column">
+                {% include navigation.html %}
+            </div><!-- .l-small-column -->
+            <div class="l-large-column">
+                {% include header.html %}
+                <main>{{ content }}</main>
+                {% include footer.html %}
+            </div><!-- l-large-column -->
+        </div><!-- .l-flex-container -->
     </body>
 </html>
-

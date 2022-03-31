@@ -1,0 +1,62 @@
+@import "monokai.css";
+
+$accent-color: #00ff00;
+$secondary-color: #00a000;
+$border-color: #404040;
+
+body {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+pre {
+    border-color: $secondary-color;
+}
+
+strong {
+    color: $accent-color;
+}
+
+p code,
+li code {
+    background-color: $border-color;
+}
+
+.l-flex-container {
+    background-color: #202020;
+}
+
+.l-small-column {
+    background-color: #282828;
+    border-color: $border-color;
+}
+
+.l-large-column {
+    border-color: $border-color;
+}
+
+header {
+    background-image: url("/assets/img/Banner.png");
+    border-color: $border-color;
+}
+
+header h1 {
+    color: $accent-color;
+    text-shadow: 0 0 5px #000000;
+}
+
+nav li a {
+    border-top-color: #404040;
+    border-bottom-color: #202020;
+    background-color: #303030;
+}
+
+nav li a:hover {
+    background-color: #383838;
+    text-decoration: underline;
+}
+
+footer {
+    border-color: $border-color;
+    color: #d0d0d0;
+}
