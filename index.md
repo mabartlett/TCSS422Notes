@@ -15,7 +15,7 @@ I built this page by using [Jekyll](https://jekyllrb.com/), a popular static-sit
 
 ## What Is an Operating System?
 
-The **operating system** (OS) handles the communication between input/output devices and CPU/memory. It is a resource manager that handles the hardware for one's programs. An operating system is *software*. Many operating systems are written in **C**, so that's the language we'll be using in this class. It's more predictable than a higher-level language like Java or Python. [The GNU C Reference Manual](https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html) is a great resource. Here's what a simple program in C looks like:
+The **operating system** (OS) handles the communication between input/output devices and CPU/memory. It is a resource manager that handles the hardware for one's programs. An operating system is *software*. In one sentence the OS is responsible for running programs, sharing memory, and interacting with devices. Many operating systems are written in **C**, so that's the language we'll be using in this class. It's more predictable than a higher-level language like Java or Python. [The GNU C Reference Manual](https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html) is a great resource. Here's what a simple program in C looks like:
 
 {% highlight c %}
 #include <stdio.h>
