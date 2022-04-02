@@ -32,7 +32,7 @@ a:focus { outline: dashed 2px #808080; }
 
 .l-small-column { flex-basis: 12rem; flex-grow: 1; box-sizing: border-box; border-left: 1px solid; border-right: 1px solid; }
 
-.l-large-column { flex-basis: 24rem; flex-grow: 4; box-sizing: border-box; border-right: 1px solid; min-height: 100vh; }
+.l-large-column { display: flex; flex-direction: column; flex-basis: 24rem; flex-grow: 4; box-sizing: border-box; border-right: 1px solid; min-height: 100vh; }
 
 nav li a { text-align: center; display: block; width: 100%; padding: 1rem; box-sizing: border-box; border-top: 1px solid; border-bottom: 1px solid; }
 
@@ -40,7 +40,7 @@ header { padding: 2rem; border-bottom: 1px solid; }
 
 header h1 { font-weight: normal; font-family: "courier new", monospace; margin: 0; }
 
-main { padding: 2rem; }
+main { padding: 2rem; flex-grow: 1; }
 
 main a { text-decoration: underline; }
 

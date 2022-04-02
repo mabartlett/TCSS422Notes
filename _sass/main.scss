@@ -93,6 +93,8 @@ a:focus {
 }
 
 .l-large-column {
+    display: flex;
+    flex-direction: column;
     flex-basis: 24rem;
     flex-grow: 4;
     box-sizing: border-box;
@@ -131,6 +133,7 @@ header h1 {
 
 main {
     padding: 2rem;
+    flex-grow: 1;
 }
 
 main a {
@@ -142,7 +145,7 @@ main a:hover {
 }
 
 main h1 {
-    
+
 }
 
 main h2:not(:first-of-type) {
