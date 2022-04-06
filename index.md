@@ -7,7 +7,7 @@ layout: default
 
 ## Introduction
 
-Welcome, fellow student! This page is where you'll find the notes I've typed for TCSS 422 - Computer Operating Systems in the Spring 2022 quarter. (Please refer to the footer for copyright information.) I hope you'll find this page as helpful as I do. I'll be updating this site regularly throughout the quarter, so check in regularly. Please do not substitute reading this page for coming to class.
+Welcome, fellow student! This page is where you'll find the notes I've typed for TCSS 422 Computer Operating Systems in the Spring 2022 at University of Washington Tacoma. (Please refer to the footer for copyright information.) I hope you'll find this page as helpful as I do. I'll be updating this site throughout the quarter, so check in regularly. Please do not substitute reading this page for coming to class. **If you are looking for answers to the homework or quizzes, you will not find them here.** Sorry, pal!
 
 Those outside University of Washington Tacoma will certainly find this resource helpful, as well. All are welcome to come and learn.
 
@@ -25,3 +25,5 @@ public int main(void) {
     return 0;
 }
 {% endhighlight %}
+
+Two other references I would recommend include [this reference at cplusplus.com](https://www.cplusplus.com/reference/) and the [GNU C Programming Tutorial](http://crasseux.com/books/ctutorial/).
