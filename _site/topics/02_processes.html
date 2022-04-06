@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>More About Processes</title>
+        <link rel="stylesheet" href=/assets/css/styles.css>
+    </head>
+    <body>
+        <div class="l-flex-container">
+            <div class="l-small-column">
+                <nav>
+    <ul>
+        <li><a href="">Home</a></li>
+        
+            <li>
+                <a href="/topics/01_resource.html">
+                    Resource Sharing
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/02_processes.html">
+                    More About Processes
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+            </div><!-- .l-small-column -->
+            <div class="l-large-column">
+                <header>
+    <h1>Marcus's Operating System Notes</h1>
+</header>
+
+                <main><h1 id="more-about-processes">More About Processes</h1>
+
+<h2 id="kernels-view-of-processes">Kernel’s View of Processes</h2>
+
+<h3 id="process-control-block">Process Control Block</h3>
+
+<p>Each process has its own data structure called a <strong>process control block</strong> (PCB), which contains all the information about a process, namely:</p>
+
+<ul>
+  <li>Process State</li>
+  <li>Process ID (PID)</li>
+  <li>User ID, etc.</li>
+  <li>Program Counter</li>
+  <li>Registers</li>
+  <li>Address Space</li>
+  <li>Open Files</li>
+</ul>
+
+<h3 id="process-state">Process State</h3>
+
+<p>The state of a process could be running, ready, or waiting.</p>
+
+<ul>
+  <li>A running process is one that is, well, running. The number of simultaneously running process is equal to the number of cores on the machine.</li>
+  <li>A ready process is one that is ready and willing for the OS to assign to the CPU. A process spends most of the time in this state.</li>
+  <li>A waiting (or blocked) process is one waiting for some event like a keyboard press or a network signal.</li>
+</ul>
+
+<p>Clearly, the state of a process is fluid. Regardless of the corresponding process’s state, the OS maintains the PCB. A process cannot go from waiting to running. It must go from waiting to ready to running.</p>
+
+<h3 id="pcb-and-hardware">PCB and Hardware</h3>
+
+<p>A process’s hardware state (e.g., current register value) is stored in its PCB. When it starts it back up, it reloads that state back into the hardware. Switching from one CPU hardware state to another is a <strong>context switch</strong>. With this switch, there is necessary idle time. OS designers must come up with designs that minimize this. Doing so is left as an exercise for the reader.</p>
+
+<h2 id="programmers-view-of-processes">Programmer’s View of Processes</h2>
+
+<p>Parent processes create child processes. In Unix, <code class="language-plaintext highlighter-rouge">init</code> creates the first process and has a PID of 0 or 1. Processes are made by using the C function <strong><code class="language-plaintext highlighter-rouge">fork()</code></strong> in Unix. The process returned has its own PCB and address space. The <code class="language-plaintext highlighter-rouge">fork()</code> function “[i]nitializes the address space with a copy of the entire contents of the address space of the parent.” This is very important. Also important to note is that <em>this function returns twice</em>, hence the name “fork.” “It returns the child’s PID to the parent and ‘0’ to the child.”</p>
+</main>
+                <footer>
+    <p>
+    The information on this page should be distributed freely and must be used
+    for educational purposes only. While this website is wholly the creation of
+    Marcus Bartlett, all content is from Professor Juhau Hu's TCSS 422
+    class at University of Washington Tacoma during the quarter of Spring 2022.
+    Some course content is therefore adapted from the course textbook
+    <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three
+        Easy Pieces
+    </a> by Remzi and Andrea Arpaci-Dusseau
+    The header image was created by
+    <a href="https://unsplash.com/photos/jXd2FSvcRr8">Umberto</a>. Anything that
+    appears in quotation marks without citations is taken from Professor Hu's
+    lecture slides. Please do not send the copyright police after me.
+    </p>
+    <p>
+        If you see any problem with the page, please email me at
+        <a href="mailto:mabartlett@hotmail.com">mabartlett@hotmail.com</a>.
+    </p>
+</footer>
+
+            </div><!-- l-large-column -->
+        </div><!-- .l-flex-container -->
+    </body>
+</html>

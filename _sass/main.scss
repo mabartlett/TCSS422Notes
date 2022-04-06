@@ -46,15 +46,13 @@ h4, h5, h6 {
     margin: 1.125rem 0;
 }
 
-p {
-    line-height: 1.5rem;
-}
-
 p + p,
 p + ul,
 p + ol,
 p + dl,
-p + pre {
+p + pre,
+ul + p,
+pre + p {
     margin-top: 1rem;
 }
 
@@ -156,6 +154,26 @@ main p,
 main li {
     text-align: justify;
     hyphens: auto;
+    line-height: 1.5rem;
+}
+
+main ul {
+    list-style-type: disc;
+}
+
+main ol {
+    list-style-type: decimal;
+}
+
+main li {
+    list-style-position: inside;
+}
+
+p code,
+li code {
+    padding: 0.15rem;
+    border-radius: 3px;
+    border: 1px solid;
 }
 
 footer {

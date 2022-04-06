@@ -3,6 +3,7 @@
 $accent-color: #00ff00;
 $secondary-color: #00a000;
 $border-color: #404040;
+$code-color: #505050;
 
 body {
     background-color: #000000;
@@ -19,7 +20,8 @@ strong {
 
 p code,
 li code {
-    background-color: $border-color;
+    background-color: $code-color;
+    border-color: $border-color;
 }
 
 .l-flex-container {
@@ -33,6 +35,10 @@ li code {
 
 .l-large-column {
     border-color: $border-color;
+}
+
+main h1 {
+    
 }
 
 header {

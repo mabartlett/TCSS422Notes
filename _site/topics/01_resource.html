@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Resource Sharing</title>
+        <link rel="stylesheet" href=/assets/css/styles.css>
+    </head>
+    <body>
+        <div class="l-flex-container">
+            <div class="l-small-column">
+                <nav>
+    <ul>
+        <li><a href="">Home</a></li>
+        
+            <li>
+                <a href="/topics/01_resource.html">
+                    Resource Sharing
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/02_processes.html">
+                    More About Processes
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+            </div><!-- .l-small-column -->
+            <div class="l-large-column">
+                <header>
+    <h1>Marcus's Operating System Notes</h1>
+</header>
+
+                <main><h1 id="resource-sharing">Resource Sharing</h1>
+
+<h2 id="processes">Processes</h2>
+
+<p>“A <strong>process</strong> is a running program.” Each process has numerous <strong>components</strong> such as stack, heap, static data, and code. Processes must “overlap” (i.e., one must run for a little while, then another, then back to the other, and so on) for a few reasons. Some accept user input and some are merely “running in the background,” but the primary motiviation is to reduce latency.</p>
+
+<p>Two processes can be concurrently executing the same program. Remember that a program is merely static code. The Linux directory <code class="language-plaintext highlighter-rouge">/proc</code> contains all the information related to all the  currently running processes and the linux program <code class="language-plaintext highlighter-rouge">top</code> will display all the currently running processes. The Windows task manager will provide similar information. Don’t be fooled! These processes are all sharing the same CPU but if they are not running on different threads, they merely run one after another. We’ll discuss that more in a moment.</p>
+
+<p>In Firefox, every tab is a thread. In Google Chrome, every tab is a process, which means there is no communication between tabs. Juhua doesn’t seem to like Firefox much.</p>
+
+<h2 id="cpu-sharing">CPU Sharing</h2>
+
+<p>Many programs <em>seem</em> to run at once. One CPU provides many <strong>virtual CPUs</strong>. Implementing virtual CPUs involves <strong>time sharing</strong>, which is when the OS runs different processes consecutively. At any time, <em>only one</em> process can be running on one core. This means four cores can have four simultaneously running processes. Thus, we must ask ourselves how the OS must go from one process to another while minimizing overhead.</p>
+
+<p>In C, the keyword <strong>volatile</strong> denotes a variable is shared by multiple threads. This name is fitting because shared threads are often desynchronized, which can cause problems like race conditions. The <strong>pthread</strong> C API is defined by the OS for multi-threading. First you must <em>create</em> threads and at the end, you must <em>join</em> them.</p>
+
+<h2 id="memory-sharing">Memory Sharing</h2>
+
+<p>Each process has its own <strong>virtual address space</strong>. The OS maps <em>virtual</em> address spaces onto the <em>physical</em> memory. The same virtual address in different threads can actually point to different physical addresses. When your C program prints a memory address, it’s printing a virtual address.</p>
+</main>
+                <footer>
+    <p>
+    The information on this page should be distributed freely and must be used
+    for educational purposes only. While this website is wholly the creation of
+    Marcus Bartlett, all content is from Professor Juhau Hu's TCSS 422
+    class at University of Washington Tacoma during the quarter of Spring 2022.
+    Some course content is therefore adapted from the course textbook
+    <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three
+        Easy Pieces
+    </a> by Remzi and Andrea Arpaci-Dusseau
+    The header image was created by
+    <a href="https://unsplash.com/photos/jXd2FSvcRr8">Umberto</a>. Anything that
+    appears in quotation marks without citations is taken from Professor Hu's
+    lecture slides. Please do not send the copyright police after me.
+    </p>
+    <p>
+        If you see any problem with the page, please email me at
+        <a href="mailto:mabartlett@hotmail.com">mabartlett@hotmail.com</a>.
+    </p>
+</footer>
+
+            </div><!-- l-large-column -->
+        </div><!-- .l-flex-container -->
+    </body>
+</html>
