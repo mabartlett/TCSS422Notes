@@ -70,7 +70,32 @@
 
 <h2 id="programmers-view-of-processes">Programmer’s View of Processes</h2>
 
-<p>Parent processes create child processes. In Unix, <code class="language-plaintext highlighter-rouge">init</code> creates the first process and has a PID of 0 or 1. Processes are made by using the C function <strong><code class="language-plaintext highlighter-rouge">fork()</code></strong> in Unix. The process returned has its own PCB and address space. The <code class="language-plaintext highlighter-rouge">fork()</code> function “[i]nitializes the address space with a copy of the entire contents of the address space of the parent.” This is very important. Also important to note is that <em>this function returns twice</em>, hence the name “fork.” “It returns the child’s PID to the parent and ‘0’ to the child.”</p>
+<h3 id="fork">Fork</h3>
+
+<p>Parent processes create child processes. In Unix, <code class="language-plaintext highlighter-rouge">init</code> creates the first process and has a PID of 0 or 1. Processes are made by using the C function <strong><code class="language-plaintext highlighter-rouge">fork()</code></strong> in Unix. The process returned has its own PCB and address space. The <code class="language-plaintext highlighter-rouge">fork()</code> function “[i]nitializes the address space with a copy of the entire contents of the address space of the parent.” This is very important! Also important to note is that <em>this function returns twice</em>, hence the name “fork.” “It returns the child’s PID to the parent and ‘0’ to the child.” Quite often, the terminal is the parent process. The order of execution of processes is typically non-deterministic (and we assume it is unless stated otherwise).</p>
+
+<p>One C function defined by the Linux API is <code class="language-plaintext highlighter-rouge">getpid()</code>, which returns the pid of the calling process. It is defined in <code class="language-plaintext highlighter-rouge">unistd.h</code>.</p>
+
+<p>Let’s say we have a program that has a process created with <code class="language-plaintext highlighter-rouge">fork()</code>. If the child process is run, a file is closed. If a parent process is run, the file is read. However, these processes are separate and running in their own address space, so the attempt to read the file in the parent process will <em>not</em> fail even if the child process is run first! Each process has their own copies of everything.</p>
+
+<h3 id="wait">Wait</h3>
+
+<p>Another important function is <strong><code class="language-plaintext highlighter-rouge">wait(int *wstatus)</code></strong>, which will wait for all child processes to finish before continuing execution. The argument <code class="language-plaintext highlighter-rouge">wstatus</code> is almost always <code class="language-plaintext highlighter-rouge">NULL</code>. Similarly, <code class="language-plaintext highlighter-rouge">waitpid()</code> will wait for a specific child process. Do not be confused by the word “wait.” This is not a <code class="language-plaintext highlighter-rouge">sleep()</code> function. The <code class="language-plaintext highlighter-rouge">wait()</code> function is defined by <code class="language-plaintext highlighter-rouge">sys/wait.h</code>. Its return value is the pid of the last finished child. A <strong>zombie process</strong> is a child that was created by a <code class="language-plaintext highlighter-rouge">fork()</code> and has exited but its parent is still waiting.</p>
+
+<h3 id="process-creation">Process Creation</h3>
+
+<p>What if a child process wants to start its own program? You can use the following, which is also defined in <code class="language-plaintext highlighter-rouge">unistd.h</code>:</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="n">execvp</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">argv</span><span class="p">[])</span></code></pre></figure>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">filename</code> is the command.</li>
+  <li><code class="language-plaintext highlighter-rouge">argv[]</code> is the list of arguments, the first of which should be whatever <code class="language-plaintext highlighter-rouge">filename</code> was. You better remember to put <code class="language-plaintext highlighter-rouge">NULL</code> at the end!</li>
+</ul>
+
+<p>This function stops the current process and loads the specified program into the current one’s address space. <em>This all remains within the same process.</em> It returns nothing if everything went well and -1 otherwise. There is a similar–perhaps even more popular function–called <code class="language-plaintext highlighter-rouge">exec()</code> that you might see referenced more often, but that one doesn’t have <code class="language-plaintext highlighter-rouge">const</code> in front of its parameters and I don’t like that. By the way, <code class="language-plaintext highlighter-rouge">strdup()</code> is going to be your friend.</p>
+
+<p>This isn’t related to anything, but the <code class="language-plaintext highlighter-rouge">wc</code> program will give you the newline, word, and byte count for a file.</p>
 </main>
                 <footer>
     <p>
@@ -84,11 +109,11 @@
     </a> by Remzi and Andrea Arpaci-Dusseau
     The header image was created by
     <a href="https://unsplash.com/photos/jXd2FSvcRr8">Umberto</a>. Anything that
-    appears in quotation marks without citations is taken from Professor Hu's
+    appears in quotation marks without citations is taken from Juhua's
     lecture slides. Please do not send the copyright police after me.
     </p>
     <p>
-        If you see any problem with the page, please email me at
+        If you see any problem with this website, please email me at
         <a href="mailto:mabartlett@hotmail.com">mabartlett@hotmail.com</a>.
     </p>
 </footer>

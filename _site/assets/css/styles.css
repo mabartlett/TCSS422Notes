@@ -4,7 +4,7 @@ html { font-size: 18px; }
 
 body { font-family: "arial", sans-serif; }
 
-pre { font-size: 0.9rem; font-family: "consolas", "dejavu sans mono", monospace; margin: 1rem 0; padding: 1rem; overflow-x: scroll; border-bottom: 1px solid; }
+pre { font-size: 0.9rem; font-family: "consolas", "dejavu sans mono", monospace; margin: 1rem 0; padding: 1rem; border-bottom: 1px solid; }
 
 code { font-size: 16px; font-family: "consolas", "dejavu sans mono", monospace; }
 
@@ -55,6 +55,8 @@ main ol { list-style-type: decimal; }
 main li { list-style-position: inside; }
 
 p code, li code { padding: 0.15rem; border-radius: 3px; border: 1px solid; }
+
+.highlight { overflow-x: scroll; }
 
 footer { font-size: 0.8rem; line-height: 0.9rem; padding: 2rem; border-top: 1px solid; margin-top: 2rem; }
 
