@@ -9,11 +9,12 @@ body {
 }
 
 pre {
-    font-size: 0.9rem;
     font-family: "consolas", "dejavu sans mono", monospace;
     margin: 1rem 0;
     padding: 1rem;
     border-bottom: 1px solid;
+    max-width: 40rem;
+    overflow-x: scroll;
 }
 
 code {
@@ -175,8 +176,8 @@ li code {
     border: 1px solid;
 }
 
-.highlight {
-    overflow-x: scroll;
+figure[class="highlight"] {
+    
 }
 
 footer {
