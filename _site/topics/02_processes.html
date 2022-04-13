@@ -25,6 +25,18 @@
                 </a>
             </li>
         
+            <li>
+                <a href="/topics/03_lde.html">
+                    Limited Direct Execution
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/04_scheduling.html">
+                    Scheduling
+                </a>
+            </li>
+        
     </ul>
 </nav>
 
@@ -93,7 +105,7 @@
   <li><code class="language-plaintext highlighter-rouge">argv[]</code> is the list of arguments, the first of which should be whatever <code class="language-plaintext highlighter-rouge">filename</code> was. You better remember to put <code class="language-plaintext highlighter-rouge">NULL</code> at the end!</li>
 </ul>
 
-<p>This function stops the current process and loads the specified program into the current one’s address space. <em>This all remains within the same process.</em> It returns nothing if everything went well and -1 otherwise. There is a similar–perhaps even more popular function–called <code class="language-plaintext highlighter-rouge">exec()</code> that you might see referenced more often, but that one doesn’t have <code class="language-plaintext highlighter-rouge">const</code> in front of its parameters and I don’t like that.</p>
+<p>This function stops the current process and loads the specified program into the current one’s address space. <em>This all remains within the same process.</em> It returns nothing if everything went well and -1 otherwise. There is a similar–perhaps even more popular–function called <code class="language-plaintext highlighter-rouge">exec()</code> that you might see referenced more often, but that one doesn’t have <code class="language-plaintext highlighter-rouge">const</code> in front of its parameters and I don’t like that.</p>
 
 <h2 id="miscellaneous">Miscellaneous</h2>
 

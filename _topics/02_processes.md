@@ -60,8 +60,8 @@ int execvp(const char *filename, char *const argv[])
 - `filename` is the command.
 - `argv[]` is the list of arguments, the first of which should be whatever `filename` was. You better remember to put `NULL` at the end!
 
-This function stops the current process and loads the specified program into the current one's address space. *This all remains within the same process.* It returns nothing if everything went well and -1 otherwise. There is a similar--perhaps even more popular function--called `exec()` that you might see referenced more often, but that one doesn't have `const` in front of its parameters and I don't like that.
+This function stops the current process and loads the specified program into the current one's address space. *This all remains within the same process.* It returns nothing if everything went well and -1 otherwise. There is a similar--perhaps even more popular--function called `exec()` that you might see referenced more often, but that one doesn't have `const` in front of its parameters and I don't like that.
 
 ## Miscellaneous
 
-The `wc` program will give you the newline, word, and byte count for a file. Similarly, the command `grep -c word file` will give you a count of all occurrences of `word` in `file`. The C function `strdup()` is going to be your friend. 
+The `wc` program will give you the newline, word, and byte count for a file. Similarly, the command `grep -c word file` will give you a count of all occurrences of `word` in `file`. The C function `strdup()` is going to be your friend.

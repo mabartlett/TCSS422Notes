@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Scheduling</title>
+        <link rel="stylesheet" href=/assets/css/styles.css>
+    </head>
+    <body>
+        <div class="l-flex-container">
+            <div class="l-small-column">
+                <nav>
+    <ul>
+        <li><a href="">Home</a></li>
+        
+            <li>
+                <a href="/topics/01_resource.html">
+                    Resource Sharing
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/02_processes.html">
+                    More About Processes
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/03_lde.html">
+                    Limited Direct Execution
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/04_scheduling.html">
+                    Scheduling
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+            </div><!-- .l-small-column -->
+            <div class="l-large-column">
+                <header>
+    <h1>Marcus's Operating System Notes</h1>
+</header>
+
+                <main><h1 id="scheduling">Scheduling</h1>
+
+<h2 id="the-problem">The Problem</h2>
+
+<p>We have <em>k</em> <strong>jobs</strong> ready to run but only <em>n</em> CPUs. (“Jobs” refers to processes, threads, etc.) The <strong>policy</strong> determines which jobs get assigned to which CPUs. Let’s put our thinking caps on because we’ll have to work with algorithms here. The naive solution would be to assign jobs randomly, and this makes a good baseline, but it’s far from optimal. Scheduling is a wide open design choice and the criteria for “good service” include:</p>
+
+<ul>
+  <li>Throughput - “number of processes that complete per unit time”</li>
+  <li>Turnaround time - “time for each process to complete”</li>
+  <li>Response time - “time from request to first response”</li>
+</ul>
+
+<p>Execution time is not turnaround time because turnaround time includes the time a process spends in states other than running. We also want a fair scheduler, but such a thing is impossible to measure reliably.</p>
+
+<p>The operating system calls the scheduler when processes change state or exits.</p>
+</main>
+                <footer>
+    <p>
+    The information on this page should be distributed freely and must be used
+    for educational purposes only. While this website is wholly the creation of
+    Marcus Bartlett, all content is from Professor Juhau Hu's TCSS 422
+    class at University of Washington Tacoma during the quarter of Spring 2022.
+    Some course content is therefore adapted from the course textbook
+    <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three
+        Easy Pieces
+    </a> by Remzi and Andrea Arpaci-Dusseau
+    The header image was created by
+    <a href="https://unsplash.com/photos/jXd2FSvcRr8">Umberto</a>. Anything that
+    appears in quotation marks without citations is taken from Juhua's
+    lecture slides. Please do not send the copyright police after me.
+    </p>
+    <p>
+        If you see any problem with this website, please email me at
+        <a href="mailto:mabartlett@hotmail.com">mabartlett@hotmail.com</a>.
+    </p>
+</footer>
+
+            </div><!-- l-large-column -->
+        </div><!-- .l-flex-container -->
+    </body>
+</html>
