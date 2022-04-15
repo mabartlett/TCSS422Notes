@@ -70,7 +70,7 @@ a {
 }
 
 a:focus {
-    outline: dashed 2px #808080;
+    outline: dashed 2px #0000ff;
 }
 
 .l-flex-container {
@@ -187,9 +187,9 @@ footer a {
 }
 
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 900px) {
     html {
-        font-size: 16px;
+        font-size: 18px;
     }
 
     .l-flex-container {
@@ -207,5 +207,19 @@ footer a {
     .l-large-column {
         border-right: 0;
         min-height: 100vh;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    html {
+        font-size: 16px;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    footer {
+        padding: 1rem;
     }
 }
