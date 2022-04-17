@@ -37,7 +37,7 @@ A process's hardware state (e.g., current register value) is stored in its PCB. 
 
 ### Fork
 
-Parent processes create child processes. In Unix, `init` creates the first process and has a PID of 0 or 1. Processes are made by using the C function **`fork()`** in Linux. The process returned has its own PCB and address space. The `fork()` function "[i]nitializes the address space with a copy of the entire contents of the address space of the parent." This is very important! Also important to note is that *this function returns twice*, hence the name "fork." "It returns the child's PID to the parent and '0' to the child." Quite often, the terminal is the parent process. The order of execution of processes is typically non-deterministic (and we assume it is unless stated otherwise).
+Parent processes create child processes. In Unix, `init` creates the first process and has a PID of 0 or 1. Processes are made by using the C function **`fork()`** in Linux, which is defined in `unistd.h`. The process returned has its own PCB and address space. The `fork()` function "[i]nitializes the address space with a copy of the entire contents of the address space of the parent." This is very important! Also important to note is that *this function returns twice*, hence the name "fork." "It returns the child's PID to the parent and '0' to the child." Quite often, the terminal is the parent process. The order of execution of processes is typically non-deterministic (and we assume it is unless stated otherwise). The `fork()` function returns a type `pid_t`, which is defined in `sys/types.h`.
 
 One C function defined by the Linux API is `getpid()`, which returns the PID of the calling process. It is defined in `unistd.h`.
 
@@ -60,8 +60,8 @@ int execvp(const char *filename, char *const argv[])
 - `filename` is the command.
 - `argv[]` is the list of arguments, the first of which should be whatever `filename` was. You better remember to put `NULL` at the end!
 
-This function stops the current process and loads the specified program into the current one's address space. *This all remains within the same process.* It returns nothing if everything went well and -1 otherwise. There is a similar--perhaps even more popular--function called `exec()` that you might see referenced more often, but that one doesn't have `const` in front of its parameters and I don't like that.
+This function stops the current process and loads the specified program into the current one's address space. *This all remains within the same process.* It returns nothing if everything went well and -1 otherwise. There is a similar--perhaps even more popular--function called `exec()` that you might see referenced more often, but we'll be using `execvp()` in this class.
 
 ## Miscellaneous
 
-The `wc` program will give you the newline, word, and byte count for a file. Similarly, the command `grep -c word file` will give you a count of all occurrences of `word` in `file`. The C function `strdup()` is going to be your friend.
+The `wc` program will give you the newline, word, and byte count for a file. Similarly, the command `grep -c word file` will give you a count of all occurrences of `word` in `file`. The C function `strdup()` is going to be your friend. Beware that it calls `malloc()`, which means you'll want to `free()` the string later!
