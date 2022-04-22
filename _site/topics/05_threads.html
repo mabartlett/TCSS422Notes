@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Threads and Concurrency</title>
+        <link rel="stylesheet" href=/assets/css/styles.css>
+    </head>
+    <body>
+        <div class="l-flex-container">
+            <div class="l-small-column">
+                <nav>
+    <ul>
+        <li><a href="">Home</a></li>
+        
+            <li>
+                <a href="/topics/01_resource.html">
+                    Resource Sharing
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/02_processes.html">
+                    More About Processes
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/03_lde.html">
+                    Limited Direct Execution
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/04_scheduling.html">
+                    Scheduling
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/05_threads.html">
+                    Threads and Concurrency
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+            </div><!-- .l-small-column -->
+            <div class="l-large-column">
+                <header>
+    <h1>Marcus's Operating System Notes</h1>
+</header>
+
+                <main><h1 id="threads-and-concurrency">Threads and Concurrency</h1>
+
+<h2 id="threads">Threads</h2>
+
+<p>Communication between processes is expensive because the communication must go through the OS. This is where threads enter. Each tab in Google Chrome is a process. These tabs share the same code, data, privileges, and resources; however, they do not share hardware state, e.g., program counter, stack pointer, or register values. “Why don’t we separate the concept of a process from its execution state?” We call the execution state the <strong>thread of control</strong>. In a multi-threaded process, there are multiple threads of control and hardware states, but code, data, and files are shared. In other words, they have <em>one address space</em> but unique execution states.</p>
+
+<p>Thus, threads and processes are two different things in modern operating systems. “A thread is bound to a single process.” Each process may have multiple threads. For example, you can have one thread for a GUI and another for I/O but these threads will still be running the same process.</p>
+
+<p>C makes use of threads with the <strong><code class="language-plaintext highlighter-rouge">pthread</code></strong> API, which is defined in <code class="language-plaintext highlighter-rouge">pthread.h</code>. The function to create a thread is</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="nf">pthread_create</span><span class="p">(</span><span class="n">pthread_t</span> <span class="o">*</span><span class="kr">thread</span><span class="p">,</span> <span class="k">const</span> <span class="n">pthread_attr_t</span> <span class="o">*</span><span class="n">attr</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">start_routine</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="p">),</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span></code></pre></figure>
+
+<p>The argument <code class="language-plaintext highlighter-rouge">*attr</code> is usually <code class="language-plaintext highlighter-rouge">NULL</code>. You must join the thread later with the following function:</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="n">pthread_join</span><span class="p">(</span><span class="n">pthread_t</span> <span class="kr">thread</span><span class="p">,</span> <span class="kt">void</span> <span class="o">**</span><span class="n">value_ptr</span><span class="p">)</span></code></pre></figure>
+
+<p>Anything that comes after <code class="language-plaintext highlighter-rouge">pthread_join()</code> is going to be run <em>after</em> the end of the thread.</p>
+
+<h2 id="race-conditions">Race Conditions</h2>
+
+<p>Be responsible when using multiple threads! If the order of execution is important, do not put events in separate threads. Beware of <strong>race conditions</strong>, in which multiple threads share a resource and the outcome is different depending on which thread accesses the resource first. Only global resources are susceptible to race conditions and we must protect them by using <strong>synchronization</strong>. Local variables are not shared but anything on the heap is. (Anything allocated with <code class="language-plaintext highlighter-rouge">malloc()</code> is on the heap.)</p>
+
+<p>We can allow only one thread to complete the operation of a code by a process called <strong>mutual exclusion</strong>. Code under such exclusion is a <em>critical section</em>.</p>
+</main>
+                <footer>
+    <p>
+    The information on this page should be distributed freely and must be used
+    for educational purposes only. While this website is wholly the creation of
+    Marcus Bartlett, all content is from Professor Juhau Hu's TCSS 422
+    class at University of Washington Tacoma during the quarter of Spring 2022.
+    Some course content is therefore adapted from the course textbook
+    <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three
+        Easy Pieces
+    </a> by Remzi and Andrea Arpaci-Dusseau
+    The header image was created by
+    <a href="https://unsplash.com/photos/jXd2FSvcRr8">Umberto</a>. Anything that
+    appears in quotation marks without citations is taken from Juhua's
+    lecture slides. Please do not send the copyright police after me.
+    </p>
+    <p>
+        If you see any problem with this website, please email me at
+        <a href="mailto:mabartlett@hotmail.com">mabartlett@hotmail.com</a>.
+    </p>
+</footer>
+
+            </div><!-- l-large-column -->
+        </div><!-- .l-flex-container -->
+    </body>
+</html>
