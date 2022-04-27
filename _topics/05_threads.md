@@ -29,4 +29,31 @@ Anything that comes after `pthread_join()` is going to be run *after* the end of
 
 Be responsible when using multiple threads! If the order of execution is important, do not put events in separate threads. Beware of **race conditions**, in which multiple threads share a resource and the outcome is different depending on which thread accesses the resource first. Only global resources are susceptible to race conditions and we must protect them by using **synchronization**. Local variables are not shared but anything on the heap is. (Anything allocated with `malloc()` is on the heap.)
 
-We can allow only one thread to complete the operation of a code by a process called **mutual exclusion**. Code under such exclusion is a *critical section*.
+We can allow only one thread to complete the operation of a particular section of code by a process called **mutual exclusion** (mutex). Code under such exclusion is a **critical section** (CS), which requires:
+
+1. Mutual Exclusion
+2. Progress: No other threads are allowed inside. Any thread inside will eventually leave.
+3. Bounded Waiting: Any threads waiting to enter will eventually enter.
+4. Performance: The overhead required for entering the critical section is as small as possible.
+
+In human terms, the requirements are safety, liveness (i.e., "something good happens"), and performance. Performance is the one property that is evaluated across all runs on average. Keep in mind that, while performance is important, safety is still priority number one!
+
+## Locks
+
+**Locks** are one way to implement critical sections. Metaphorically, a thread locks a door on the way in and then unlocks it on their way out. There are two operations associated with locks:
+
+- `acquire()`: "Wait until the lock is free, then take it to enter a C.S."
+- `release()`: "Release lock to leave a C.S., waking up anyone waiting for it."
+
+These two functions must *always* go together. Once you use `acquire()`, you must later use `release()`. If one thread has acquired a lock, another cannot acquire it until the first has released it. When there are multiple threads needing to acquire a lock, acquisition is scheduled on a first-come, first-serve basis. Here is how you would acquire and release in C:
+
+{% highlight c %}
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_lock(&lock);
+// Critical section code goes here.
+pthread-mutex_unlock(&lock);
+{% endhighlight %}
+
+The variable `lock` is either locked or unlocked. It is initialized to locked.
+
+There are two design approaches for locks: coarse-grained locking, in which "[o]ne big lock is used any time any critical section is accessed," and fine-grained locking, in which different locks are used "to protect different data and data structures." This is a design choice that is up to the developer.

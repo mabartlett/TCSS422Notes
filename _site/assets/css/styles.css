@@ -16,7 +16,7 @@ h3 { font-weight: bold; font-size: 1.25rem; margin: 1.25rem 0; }
 
 h4, h5, h6 { font-weight: bold; font-size: 1.125rem; margin: 1.125rem 0; }
 
-p + p, p + ul, p + ol, p + dl, p + pre, ul + p, pre + p { margin-top: 1rem; }
+p + p, p + ul, p + ol, p + dl, p + pre, ol + p, ul + p, pre + p { margin-top: 1rem; }
 
 strong { font-weight: bold; }
 
