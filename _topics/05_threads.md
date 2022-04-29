@@ -37,23 +37,3 @@ We can allow only one thread to complete the operation of a particular section o
 4. Performance: The overhead required for entering the critical section is as small as possible.
 
 In human terms, the requirements are safety, liveness (i.e., "something good happens"), and performance. Performance is the one property that is evaluated across all runs on average. Keep in mind that, while performance is important, safety is still priority number one!
-
-## Locks
-
-**Locks** are one way to implement critical sections. Metaphorically, a thread locks a door on the way in and then unlocks it on their way out. There are two operations associated with locks:
-
-- `acquire()`: "Wait until the lock is free, then take it to enter a C.S."
-- `release()`: "Release lock to leave a C.S., waking up anyone waiting for it."
-
-These two functions must *always* go together. Once you use `acquire()`, you must later use `release()`. If one thread has acquired a lock, another cannot acquire it until the first has released it. When there are multiple threads needing to acquire a lock, acquisition is scheduled on a first-come, first-serve basis. Here is how you would acquire and release in C:
-
-{% highlight c %}
-pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_lock(&lock);
-// Critical section code goes here.
-pthread-mutex_unlock(&lock);
-{% endhighlight %}
-
-The variable `lock` is either locked or unlocked. It is initialized to locked.
-
-There are two design approaches for locks: coarse-grained locking, in which "[o]ne big lock is used any time any critical section is accessed," and fine-grained locking, in which different locks are used "to protect different data and data structures." This is a design choice that is up to the developer.

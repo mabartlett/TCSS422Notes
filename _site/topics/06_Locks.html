@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Locks</title>
+        <link rel="stylesheet" href=/assets/css/styles.css>
+    </head>
+    <body>
+        <div class="l-flex-container">
+            <div class="l-small-column">
+                <nav>
+    <ul>
+        <li><a href="">Home</a></li>
+        
+            <li>
+                <a href="/topics/01_resource.html">
+                    Resource Sharing
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/02_processes.html">
+                    More About Processes
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/03_lde.html">
+                    Limited Direct Execution
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/04_scheduling.html">
+                    Scheduling
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/05_threads.html">
+                    Threads and Concurrency
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/06_Locks.html">
+                    Locks
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+            </div><!-- .l-small-column -->
+            <div class="l-large-column">
+                <header>
+    <h1>Marcus's Operating System Notes</h1>
+</header>
+
+                <main><h1 id="locks">Locks</h1>
+
+<h2 id="locks-and-critical-sections">Locks and Critical Sections</h2>
+
+<p><strong>Locks</strong> are one way to implement critical sections. Metaphorically, a thread locks a door on the way in and then unlocks it on their way out. There are two operations associated with locks:</p>
+
+<ul>
+  <li>Acquire: “Wait until the lock is free, then take it to enter a C.S.”</li>
+  <li>Release: “Release lock to leave a C.S., waking up anyone waiting for it.”</li>
+</ul>
+
+<p>These two functions must <em>always</em> go together. Once you use acquire, you must later use release. If one thread has acquired a lock, another cannot acquire it until the first has released it. When there are multiple threads needing to acquire a lock, acquisition is scheduled on a first-come, first-serve basis. Here is how you would acquire and release in C:</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">pthread_mutex_t</span> <span class="n">lock</span> <span class="o">=</span> <span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span>
+<span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
+<span class="c1">// Critical section code goes here.</span>
+<span class="n">pthread</span><span class="o">-</span><span class="n">mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span></code></pre></figure>
+
+<p>The variable <code class="language-plaintext highlighter-rouge">lock</code> is either locked or unlocked. It is initialized to locked.</p>
+
+<p>There are two design approaches for locks: coarse-grained locking, in which “[o]ne big lock is used any time any critical section is accessed,” and fine-grained locking, in which different locks are used “to protect different data and data structures.” This is a design choice that is up to the developer.</p>
+
+<h2 id="lock-implementations">Lock Implementations</h2>
+
+<p>One way to implement locks on the OS is the “spin lock,” where a thread waits to enter a locked critical section by “spinning,” which is when it merely burns cycles in a while loop. Lock implementation on the OS should be <strong>atomic</strong>. “An atomic operation is on which executes as though it could not be interrupted.” Something is required from the hardware to make an operation atomic. An example of an atomic operation is <strong>test-and-set</strong>, where an old value in memory is fetched, the new value is written instead, and the old value is returned. When executing a test-and-set instruction on a lock “flag,” the new value should be 1, i.e., locked. The new value is always 1, too. The returned value could be either 0 or 1. <em>Test-and-set has to be something supported on the hardware itself for all of this to work.</em></p>
+
+<p>Spin locks ensure correctness, but it does not guarantee fairness. Once a lock is in a critical section, there is nothing to force it to give up control of it. The starvation problem shows up here, too. Performance is clearly a problem because of the “spinning.” Thus, spinlocks are too wasteful to be considered an optimal implementation.</p>
+
+<p>So what’s the solution? Yield! Instead of burning cycles in a while loop, the thread should simply yield control of the CPU when it detects a critical section is locked. This will change the thread’s state from “running” to “ready.” This context switch does come with some overhead and starvation still isn’t prevented, so you don’t get better performance for free.</p>
+
+<p><strong>Fetch-and-add</strong> ensures fairness. It is like test-and-set except instead of setting a new value, you add 1 to the old value. In this implementation, instead of merely being a flag, the lock has a “ticket” and a “turn.” If the lock’s turn is equal to a thread’s ticket, then the thread is given entry. Every time a thread releases a lock, the lock’s “turn” value is fetched-and-added. (We have to assume that a thread cannot be terminated by something outside in this implementation.)</p>
+
+<h2 id="lock-based-data-structures">Lock-Based Data Structures</h2>
+
+<p>“Adding locks to shared data structures make them thread safe.” This means we do not have to implement a critical section every time access is needed to them.</p>
+</main>
+                <footer>
+    <p>
+    The information on this page should be distributed freely and must be used
+    for educational purposes only. While this website is wholly the creation of
+    Marcus Bartlett, all content is from Professor Juhau Hu's TCSS 422
+    class at University of Washington Tacoma during the quarter of Spring 2022.
+    Some course content is therefore adapted from the course textbook
+    <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three
+        Easy Pieces
+    </a> by Remzi and Andrea Arpaci-Dusseau
+    The header image was created by
+    <a href="https://unsplash.com/photos/jXd2FSvcRr8">Umberto</a>. Anything that
+    appears in quotation marks without citations is taken from Juhua's
+    lecture slides. Please do not send the copyright police after me.
+    </p>
+    <p>
+        If you see any problem with this website, please email me at
+        <a href="mailto:mabartlett@hotmail.com">mabartlett@hotmail.com</a>.
+    </p>
+</footer>
+
+            </div><!-- l-large-column -->
+        </div><!-- .l-flex-container -->
+    </body>
+</html>

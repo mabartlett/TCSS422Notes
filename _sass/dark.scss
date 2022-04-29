@@ -4,6 +4,7 @@ $accent-color: #00ff00;
 $secondary-color: #00a000;
 $border-color: #404040;
 $code-color: #505050;
+$accessibility-color: #8080ff;
 
 body {
     background-color: #000000;
@@ -25,7 +26,7 @@ li code {
 }
 
 a:focus {
-    
+    outline: dashed 2px #0000ff;
 }
 
 .l-flex-container {
