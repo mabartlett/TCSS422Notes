@@ -44,7 +44,7 @@
             </li>
         
             <li>
-                <a href="/topics/06_Locks.html">
+                <a href="/topics/06_locks.html">
                     Locks
                 </a>
             </li>
@@ -81,22 +81,22 @@
 <p>The state of a process could be running, ready, or waiting.</p>
 
 <ul>
-  <li>A running process is one that is, well, running. The number of simultaneously running processes is equal to the number of cores on the machine.</li>
+  <li>A running process is one that is, well, running. The maximum number of simultaneously running processes is equal to the number of cores on the machine.</li>
   <li>A ready process is one that is ready and willing for the OS to assign to the CPU. A process spends most of the time in this state.</li>
   <li>A waiting (or blocked) process is one waiting for some event like a keyboard press or a network signal.</li>
 </ul>
 
-<p>Clearly, the state of a process is fluid. Regardless of the corresponding process’s state, the OS maintains the PCB. A process cannot go from waiting to running. It must go from waiting to ready to running.</p>
+<p>Regardless of the corresponding process’s state, the OS maintains the PCB. A process cannot go from waiting to running. It must go from waiting to ready to running.</p>
 
 <h3 id="pcb-and-hardware">PCB and Hardware</h3>
 
-<p>A process’s hardware state (e.g., current register value) is stored in its PCB. When the process starts back up, it reloads that state back into the hardware. Switching from one CPU hardware state to another is a <strong>context switch</strong>. With this switch, there is necessary idle time. OS designers must come up with designs that minimize this idle time. Doing so is left as an exercise for the reader.</p>
+<p>A process’s hardware state (e.g., current register value) is stored in its PCB. When the process starts back up, it reloads that state back into the hardware. Switching from one CPU hardware state to another is a <strong>context switch</strong>. With this switch, there is necessary idle time. OS designers must come up with designs that minimize this idle time.</p>
 
 <h2 id="programmers-view-of-processes">Programmer’s View of Processes</h2>
 
 <h3 id="fork">Fork</h3>
 
-<p>Parent processes create child processes. In Unix, <code class="language-plaintext highlighter-rouge">init</code> creates the first process and has a PID of 0 or 1. Processes are made by using the C function <strong><code class="language-plaintext highlighter-rouge">fork()</code></strong> in Linux, which is defined in <code class="language-plaintext highlighter-rouge">unistd.h</code>. The process returned has its own PCB and address space. The <code class="language-plaintext highlighter-rouge">fork()</code> function “[i]nitializes the address space with a copy of the entire contents of the address space of the parent.” This is very important! Also important to note is that <em>this function returns twice</em>, hence the name “fork.” “It returns the child’s PID to the parent and ‘0’ to the child.” Quite often, the terminal is the parent process. The order of execution of processes is typically non-deterministic (and we assume it is unless stated otherwise). The <code class="language-plaintext highlighter-rouge">fork()</code> function returns a type <code class="language-plaintext highlighter-rouge">pid_t</code>, which is defined in <code class="language-plaintext highlighter-rouge">sys/types.h</code>.</p>
+<p>Parent processes create child processes. In Unix, <code class="language-plaintext highlighter-rouge">init</code> creates the first process, which has a PID of 0 or 1. Processes are made by using the C function <strong><code class="language-plaintext highlighter-rouge">fork()</code></strong> in Linux, which is defined in <code class="language-plaintext highlighter-rouge">unistd.h</code>. The process returned has its own PCB and address space. The <code class="language-plaintext highlighter-rouge">fork()</code> function “[i]nitializes the address space with a copy of the entire contents of the address space of the parent.” This is very important! Also important to note is that <em>this function returns twice</em>, hence the name “fork.” “It returns the child’s PID to the parent and ‘0’ to the child.” Quite often, the terminal is the parent process. The order of execution of processes is typically non-deterministic (and we assume it is unless stated otherwise). The <code class="language-plaintext highlighter-rouge">fork()</code> function returns a type <code class="language-plaintext highlighter-rouge">pid_t</code>, which is defined in <code class="language-plaintext highlighter-rouge">sys/types.h</code>.</p>
 
 <p>One C function defined by the Linux API is <code class="language-plaintext highlighter-rouge">getpid()</code>, which returns the PID of the calling process. It is defined in <code class="language-plaintext highlighter-rouge">unistd.h</code>.</p>
 
@@ -114,14 +114,14 @@
 
 <ul>
   <li><code class="language-plaintext highlighter-rouge">filename</code> is the command.</li>
-  <li><code class="language-plaintext highlighter-rouge">argv[]</code> is the list of arguments, the first of which should be whatever <code class="language-plaintext highlighter-rouge">filename</code> was. You better remember to put <code class="language-plaintext highlighter-rouge">NULL</code> at the end!</li>
+  <li><code class="language-plaintext highlighter-rouge">argv[]</code> is the list of arguments, the first of which should be whatever <code class="language-plaintext highlighter-rouge">filename</code> was. You better remember to put <code class="language-plaintext highlighter-rouge">NULL</code> at the end of this array!</li>
 </ul>
 
 <p>This function stops the current process and loads the specified program into the current one’s address space. <em>This all remains within the same process.</em> It returns nothing if everything went well and -1 otherwise. There is a similar–perhaps even more popular–function called <code class="language-plaintext highlighter-rouge">exec()</code> that you might see referenced more often, but we’ll be using <code class="language-plaintext highlighter-rouge">execvp()</code> in this class.</p>
 
 <h2 id="miscellaneous">Miscellaneous</h2>
 
-<p>The <code class="language-plaintext highlighter-rouge">wc</code> program will give you the newline, word, and byte count for a file. Similarly, the command <code class="language-plaintext highlighter-rouge">grep -c word file</code> will give you a count of all occurrences of <code class="language-plaintext highlighter-rouge">word</code> in <code class="language-plaintext highlighter-rouge">file</code>. The C function <code class="language-plaintext highlighter-rouge">strdup()</code> is going to be your friend. Beware that it calls <code class="language-plaintext highlighter-rouge">malloc()</code>, which means you’ll want to <code class="language-plaintext highlighter-rouge">free()</code> the string later!</p>
+<p>The <code class="language-plaintext highlighter-rouge">wc</code> program will give you the newline, word, and byte count for a file. Similarly, the command <code class="language-plaintext highlighter-rouge">grep -c word file</code> will give you a count of all occurrences of <code class="language-plaintext highlighter-rouge">word</code> in <code class="language-plaintext highlighter-rouge">file</code>. The C function <code class="language-plaintext highlighter-rouge">strdup()</code> is going to be your friend. Beware that it calls <code class="language-plaintext highlighter-rouge">malloc()</code>, which means you’ll want to <code class="language-plaintext highlighter-rouge">free()</code> the string later.</p>
 </main>
                 <footer>
     <p>

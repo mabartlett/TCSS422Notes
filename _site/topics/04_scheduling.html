@@ -44,7 +44,7 @@
             </li>
         
             <li>
-                <a href="/topics/06_Locks.html">
+                <a href="/topics/06_locks.html">
                     Locks
                 </a>
             </li>
@@ -62,15 +62,15 @@
 
 <h2 id="the-problem">The Problem</h2>
 
-<p>We have <em>k</em> <strong>jobs</strong> ready to run but only <em>n</em> CPUs. (“Jobs” refers to processes, threads, etc.) The <strong>policy</strong> determines which jobs get assigned to which CPUs. Let’s put our thinking caps on because we’ll have to work with algorithms here. The naive solution would be to assign jobs randomly, and this makes a good baseline, but it’s far from optimal. Scheduling is a wide open design choice and the criteria for “good service” include:</p>
+<p>We have <em>k</em> <strong>jobs</strong> ready to run but only <em>n</em> CPUs. (“Jobs” refers to processes, threads, etc.) The <strong>policy</strong> determines which jobs get assigned to which CPUs. The naive solution would be to assign jobs randomly, and this makes a good baseline, but it’s far from optimal. Scheduling is a wide open design choice and there are three major criteria for “good service”:</p>
 
 <ul>
   <li><strong>Throughput</strong> is the “number of processes that complete per unit time”</li>
-  <li><strong>Turnaround time</strong> (TT) is the “time for each process to complete.” It is calculated as the time of completion minus the time of <em>arrival</em>.</li>
+  <li><strong>Turnaround time</strong> (TT) is the “time for each process to complete.” It is calculated as the time of completion minus the time of arrival.</li>
   <li><strong>Response time</strong> (RT) is the “time from request to first response.” It is the first run time minus the arrival time.</li>
 </ul>
 
-<p>Execution time is not turnaround time because turnaround time includes the time a process spends in states other than running. We also want a fair scheduler, but such a thing is impossible to measure reliably. There exists no one algorithm to maximize all criteria. <em>Batch systems</em> prioritize throughput and turnaround time while <em>interactive systems</em> prioritize response time. An example of the former would be supercomputers while the latter would be PCs.</p>
+<p>Execution time is not turnaround time because turnaround time includes the time a process spends in states other than running. We also want a fair scheduler, but such a thing is impossible to measure reliably. There exists no single algorithm to maximize all criteria. <em>Batch systems</em> prioritize throughput and turnaround time while <em>interactive systems</em> prioritize response time. An example of the former would be supercomputers while the latter would be PCs.</p>
 
 <p>The operating system calls the scheduler when processes change state or exit.</p>
 
@@ -84,7 +84,7 @@
 
 <h3 id="shortest-job-first">Shortest Job First</h3>
 
-<p><strong>Shortest Job First</strong> (SJF) schedules the shortest job first. This algorithm has been proven to give optimal average turnaround time <em>if the the jobs arrive simultaneously</em>. A drawback is a “starvation problem,” where a long job is perpetually pushed to the back and is never run. A version of SJF is “non-preemptive,” in which the OS gives the CPU to a job and does not relinquish control of the CPU until the job is complete.</p>
+<p><strong>Shortest Job First</strong> (SJF) schedules the shortest job first. This algorithm has been proven to give optimal average turnaround time <em>if the jobs arrive simultaneously</em>. A drawback is a “starvation problem,” where a long job is perpetually pushed to the back and is never run. A version of SJF is “non-preemptive,” in which the OS gives the CPU to a job and does not relinquish control of the CPU until the job is complete.</p>
 
 <h3 id="shortest-time-to-completion-first">Shortest Time-to-Completion First</h3>
 
@@ -102,11 +102,23 @@
 
 <p><strong>Multi-level feedback queues</strong> (MLFQ) is the algorithm most used in modern operating systems. It improves turnaround time by running shorter jobs first and minimizes response time. This algorithm was invented by Spanish-American computer scientist Fernando José Corbató, who was the recipient of the Turing Award.</p>
 
-<p>There exist multiple job queues. (The typical design right now is three or four queues.) Rule 1 is to schedule jobs with higher priority first. Rule 2 is to schedule jobs with the same priority according to round robin scheduling. The motto of MLFQ is to “[a]djust job priority based on observed behavior.” Interactive jobs have high priority while batch jobs have lower priority. Rule 3 is to give a new job the highest priority. Rule 4a states a job’s priority should be reduced if it uses an entire time slice (because this indicates the job is likely a batch job). Its counterpart rule 4b states to keep a job’s priority level if it forfeits control of the CPU before the end of its time slice. Keep in mind that such a job may not be done because it may simply be <em>yielding</em>. Notice that this algorithm approximates shortest job first.</p>
+<p>In MLFQ, there exist multiple job queues. (The typical design right now is three or four queues.) Rule 1 is to schedule jobs with higher priority first. Rule 2 is to schedule jobs with the same priority according to round robin scheduling. The motto of MLFQ is to “[a]djust job priority based on observed behavior.” Interactive jobs have high priority while batch jobs have lower priority. Rule 3 is to give a new job the highest priority. Rule 4a states a job’s priority should be reduced if it uses an entire time slice (because this indicates the job is likely a batch job). Its counterpart rule 4b states to keep a job’s priority level if it forfeits control of the CPU before the end of its time slice. Keep in mind that such a job may not be done because it may simply be <em>yielding</em>. Notice that this algorithm approximates shortest job first.</p>
 
 <p>MLFQ isn’t free of problems. Starvation is still an issue here. Jobs might also take advantage of the scheduler by fraudulently taking priority. We call this “gaming” the scheduler. There’s no way to prevent this. It’s also possible a job might sink to the lowest priority queue and never rise back up.</p>
 
 <p>We can solve the starvation problem by using <strong>priority boosting</strong>, in which a job’s priority is increased artificially. Rule 5 states to move a job–no matter its current priority–to the topmost queue after some fixed time period. We can prevent “gaming” by improving time accounting, i.e., by “track[ing] total job execution time in the queue” and allotting each job a fixed time. When this time expires, the job’s priority is lowered.</p>
+
+<p>The rules restated are:</p>
+
+<ol>
+  <li>Schedule jobs with higher priority first.</li>
+  <li>Schedule jobs with the same priority according to round robin.</li>
+  <li>Give a new job the highest priority.</li>
+  <li>This rule has two parts:
+ a) Reduce a job’s priority if it uses an entire time slice.
+ b) If a job forfeits control of the CPU before the end of its time slice, its priority level should remain the same.</li>
+  <li>Move a job to the topmost queue after some fixed time period.</li>
+</ol>
 </main>
                 <footer>
     <p>

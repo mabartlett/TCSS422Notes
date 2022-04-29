@@ -44,7 +44,7 @@
             </li>
         
             <li>
-                <a href="/topics/06_Locks.html">
+                <a href="/topics/06_locks.html">
                     Locks
                 </a>
             </li>
@@ -62,9 +62,9 @@
 
 <h2 id="threads">Threads</h2>
 
-<p>Communication between processes is expensive because the communication must go through the OS. This is where threads enter. Each tab in Google Chrome is a process. These tabs share the same code, data, privileges, and resources; however, they do not share hardware state, e.g., program counter, stack pointer, or register values. “Why don’t we separate the concept of a process from its execution state?” We call the execution state the <strong>thread of control</strong>. In a multi-threaded process, there are multiple threads of control and hardware states, but code, data, and files are shared. In other words, they have <em>one address space</em> but unique execution states.</p>
+<p>Communication between processes is expensive because the communication must go through the OS. This is where threads enter. Each tab in Google Chrome is a process. These tabs share the same code, data, privileges, and resources; however, they do not share hardware state, e.g., program counter, stack pointer, or register values. “Why don’t we separate the concept of a process from its execution state?” We call the execution state the <strong>thread of control</strong>. In a multi-threaded process, there are multiple threads of control and hardware states, but code, data, and files are shared. In other words, they have one address space but unique execution states.</p>
 
-<p>Thus, threads and processes are two different things in modern operating systems. “A thread is bound to a single process.” Each process may have multiple threads. For example, you can have one thread for a GUI and another for I/O but these threads will still be running the same process.</p>
+<p>Thus, threads and processes are two different things in modern operating systems. “A thread is bound to a single process.” Each process may have multiple threads. For example, you can have one thread for a GUI and another for I/O, but these threads will still be running the same process.</p>
 
 <p>C makes use of threads with the <strong><code class="language-plaintext highlighter-rouge">pthread</code></strong> API, which is defined in <code class="language-plaintext highlighter-rouge">pthread.h</code>. The function to create a thread is</p>
 
@@ -74,7 +74,7 @@
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="n">pthread_join</span><span class="p">(</span><span class="n">pthread_t</span> <span class="kr">thread</span><span class="p">,</span> <span class="kt">void</span> <span class="o">**</span><span class="n">value_ptr</span><span class="p">)</span></code></pre></figure>
 
-<p>Anything that comes after <code class="language-plaintext highlighter-rouge">pthread_join()</code> is going to be run <em>after</em> the end of the thread.</p>
+<p>In C, the keyword <strong>volatile</strong> denotes that a variable is shared by multiple threads. This name is fitting because shared threads are often desynchronized, which can cause problems like race conditions, so be careful.</p>
 
 <h2 id="race-conditions">Race Conditions</h2>
 
@@ -89,7 +89,7 @@
   <li>Performance: The overhead required for entering the critical section is as small as possible.</li>
 </ol>
 
-<p>In human terms, the requirements are safety, liveness (i.e., “something good happens”), and performance. Performance is the one property that is evaluated across all runs on average. Keep in mind that, while performance is important, safety is still priority number one!</p>
+<p>In human terms, the requirements are safety, liveness (i.e., “something good happens”), and performance. Performance is the one property that is evaluated across all runs on average. Keep in mind that, while performance is important, safety is still priority number one.</p>
 </main>
                 <footer>
     <p>
