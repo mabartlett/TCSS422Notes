@@ -9,7 +9,7 @@ layout: default
 
 We have *k* **jobs** ready to run but only *n* CPUs. ("Jobs" refers to processes, threads, etc.) The **policy** determines which jobs get assigned to which CPUs. The naive solution would be to assign jobs randomly, and this makes a good baseline, but it's far from optimal. Scheduling is a wide open design choice and there are three major criteria for "good service":
 
-- **Throughput** is the "number of processes that complete per unit time"
+- **Throughput** is the "number of processes that complete per unit time."
 - **Turnaround time** (TT) is the "time for each process to complete." It is calculated as the time of completion minus the time of arrival.
 - **Response time** (RT) is the "time from request to first response." It is the first run time minus the arrival time.
 

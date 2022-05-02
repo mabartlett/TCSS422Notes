@@ -70,7 +70,14 @@
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="nf">pthread_create</span><span class="p">(</span><span class="n">pthread_t</span> <span class="o">*</span><span class="kr">thread</span><span class="p">,</span> <span class="k">const</span> <span class="n">pthread_attr_t</span> <span class="o">*</span><span class="n">attr</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">start_routine</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="p">),</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span></code></pre></figure>
 
-<p>The argument <code class="language-plaintext highlighter-rouge">*attr</code> is usually <code class="language-plaintext highlighter-rouge">NULL</code>. You must join the thread later with the following function:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pthread_t *thread</code> is the thread to we are initializing.</li>
+  <li><code class="language-plaintext highlighter-rouge">pthread_attr_t *attr</code> is usually <code class="language-plaintext highlighter-rouge">NULL</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">void *(*start_routine)(void*)</code> is a pointer to the function the thread should start running.</li>
+  <li><code class="language-plaintext highlighter-rouge">void *arg</code> is the argument to pass to the above function.</li>
+</ul>
+
+<p>You must join the thread later with the following function:</p>
 
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="n">pthread_join</span><span class="p">(</span><span class="n">pthread_t</span> <span class="kr">thread</span><span class="p">,</span> <span class="kt">void</span> <span class="o">**</span><span class="n">value_ptr</span><span class="p">)</span></code></pre></figure>
 

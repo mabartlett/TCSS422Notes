@@ -17,7 +17,12 @@ C makes use of threads with the **`pthread`** API, which is defined in `pthread.
 int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void*), void *arg);
 {% endhighlight %}
 
-The argument `*attr` is usually `NULL`. You must join the thread later with the following function:
+- `pthread_t *thread` is the thread to we are initializing.
+- `pthread_attr_t *attr` is usually `NULL`.
+- `void *(*start_routine)(void*)` is a pointer to the function the thread should start running.
+- `void *arg` is the argument to pass to the above function.
+
+You must join the thread later with the following function:
 
 {% highlight C %}
 int pthread_join(pthread_t thread, void **value_ptr)
