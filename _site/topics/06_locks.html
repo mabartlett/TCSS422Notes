@@ -93,6 +93,37 @@
 <h2 id="lock-based-data-structures">Lock-Based Data Structures</h2>
 
 <p>“Adding locks to shared data structures make them thread safe.” This means we do not have to implement a critical section every time access is needed to them.</p>
+
+<h3 id="sloppy-counter">Sloppy Counter</h3>
+
+<p>If you’ve got a shared counter, you can lock the counter when you want to increment it. Synchronized counters have poor performance however. We say they “scale” poorly. The solution is a <strong>sloppy counter</strong>, which is where each core has its own counter that updates the global counter periodically. The sloppy counters each have a sloppiness threshold. Once the counter reaches that threshold, this value is added to the global counter and the sloppy counter is reset. The rationale behind sloppy counters is the independence of CPU cores.</p>
+
+<h3 id="concurrent-linked-list">Concurrent Linked List</h3>
+
+<p>A <strong>concurrent linked list</strong> has a lock for the head of the linked list. Insertions are protected. Here is the procedure:</p>
+
+<ol>
+  <li>Lock.</li>
+  <li>Allocate space in the heap for the new node.</li>
+  <li>If the allocation failed, throw an error and unlock. Do not forget to unlock!</li>
+  <li>Create the new node.</li>
+  <li>Update the head as the new node.</li>
+  <li>Unlock.</li>
+</ol>
+
+<p>If it fails, return -1. If it is successful, return 0. The lookup operation works similarly: each element is locked and then is unlocked as the list is traversed. Alternatively, you can lock and unlock only the head; however, locking an entire list means users have to wait for a thread to finish with a list before performing their own operation on it. The solution is <strong>hand-over-hand locking</strong> in which “[t]raversal involves handing over previous node’s lock, acquiring the next node’s lock, and so on.” This does unfortunately come at a performance cost.</p>
+
+<h3 id="michael--scott-concurrent-queues">Michael &amp; Scott Concurrent Queues</h3>
+
+<p>In a <strong>Michael and Scott concurrent queue</strong>, there are two locks: one for the head and the other for the tail. This allows items to “be added and removed by separate threads at the same time.” When we have only one item in such a queue, rather than having the head and tail point to the same node, the tail points to a dummy node. The operations enqueue and dequeue are synchronized. Here’s the procedure for enqueue:</p>
+
+<ol>
+  <li>Determine if space can be allocated for the new node.</li>
+  <li>If so, create a temporary node.</li>
+  <li>Lock the tail.</li>
+  <li>Add this new node to the queue.</li>
+  <li>Unlock the tail.</li>
+</ol>
 </main>
                 <footer>
     <p>

@@ -38,3 +38,30 @@ So what's the solution? Yield! Instead of burning cycles in a while loop, the th
 ## Lock-Based Data Structures
 
 "Adding locks to shared data structures make them thread safe." This means we do not have to implement a critical section every time access is needed to them.
+
+### Sloppy Counter
+
+If you've got a shared counter, you can lock the counter when you want to increment it. Synchronized counters have poor performance however. We say they "scale" poorly. The solution is a **sloppy counter**, which is where each core has its own counter that updates the global counter periodically. The sloppy counters each have a sloppiness threshold. Once the counter reaches that threshold, this value is added to the global counter and the sloppy counter is reset. The rationale behind sloppy counters is the independence of CPU cores.
+
+### Concurrent Linked List
+
+A **concurrent linked list** has a lock for the head of the linked list. Insertions are protected. Here is the procedure:
+
+1. Lock.
+2. Allocate space in the heap for the new node.
+3. If the allocation failed, throw an error and unlock. Do not forget to unlock!
+4. Create the new node.
+5. Update the head as the new node.
+6. Unlock.
+
+If it fails, return -1. If it is successful, return 0. The lookup operation works similarly: each element is locked and then is unlocked as the list is traversed. Alternatively, you can lock and unlock only the head; however, locking an entire list means users have to wait for a thread to finish with a list before performing their own operation on it. The solution is **hand-over-hand locking** in which "[t]raversal involves handing over previous node's lock, acquiring the next node's lock, and so on." This does unfortunately come at a performance cost.
+
+### Michael & Scott Concurrent Queues
+
+In a **Michael and Scott concurrent queue**, there are two locks: one for the head and the other for the tail. This allows items to "be added and removed by separate threads at the same time." When we have only one item in such a queue, rather than having the head and tail point to the same node, the tail points to a dummy node. The operations enqueue and dequeue are synchronized. Here's the procedure for enqueue:
+
+1. Determine if space can be allocated for the new node.
+2. If so, create a temporary node.
+3. Lock the tail.
+4. Add this new node to the queue.
+5. Unlock the tail.
