@@ -49,6 +49,12 @@
                 </a>
             </li>
         
+            <li>
+                <a href="/topics/07_condition.html">
+                    Condition Variables
+                </a>
+            </li>
+        
     </ul>
 </nav>
 
@@ -123,6 +129,15 @@
   <li>Lock the tail.</li>
   <li>Add this new node to the queue.</li>
   <li>Unlock the tail.</li>
+</ol>
+
+<p>To dequeue:</p>
+
+<ol>
+  <li>Lock the head.</li>
+  <li>Make the temporary node the head.</li>
+  <li>The new head is the one pointed to by the temporary node.</li>
+  <li>If the new head is not <code class="language-plaintext highlighter-rouge">NULL</code>, unlock the head and free the temporary node.</li>
 </ol>
 </main>
                 <footer>

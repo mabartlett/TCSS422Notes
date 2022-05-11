@@ -65,3 +65,10 @@ In a **Michael and Scott concurrent queue**, there are two locks: one for the he
 3. Lock the tail.
 4. Add this new node to the queue.
 5. Unlock the tail.
+
+To dequeue:
+
+1. Lock the head.
+2. Make the temporary node the head.
+3. The new head is the one pointed to by the temporary node.
+4. If the new head is not `NULL`, unlock the head and free the temporary node.
