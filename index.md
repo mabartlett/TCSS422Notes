@@ -20,9 +20,11 @@ The **operating system** (OS) handles the communication between input/output dev
 {% highlight c %}
 #include <stdio.h>
 
-int main(void) {
-    printf("Hello, world!\n");
-    return 0;
+int
+main(int argc, char *argv[])
+{
+  printf("Hello, world!\n");
+  return 0;
 }
 {% endhighlight %}
 

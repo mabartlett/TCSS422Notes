@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>TCSS 422 - Operating Systems</title>
+        <title>Concurrency Problems</title>
         <link rel="stylesheet" href=/assets/css/styles.css>
     </head>
     <body>
@@ -70,30 +70,27 @@
     <h1>Marcus's Operating System Notes</h1>
 </header>
 
-                <main><h1 id="home">Home</h1>
+                <main><h1 id="concurrency-problems">Concurrency Problems</h1>
 
-<h2 id="introduction">Introduction</h2>
+<h2 id="bugs">Bugs</h2>
 
-<p>Welcome, fellow student! This page is where you’ll find the notes I’ve typed for TCSS 422 Computer Operating Systems in the Spring 2022 at University of Washington Tacoma. (Please refer to the footer for copyright information.) I hope you’ll find this page as helpful as I do. I’ll be updating this site throughout the quarter, so check in regularly. Please do not substitute reading this page for coming to class. <strong>If you are looking for answers to the homework or quizzes, you will not find them here.</strong> Sorry, pal!</p>
+<p>There are several types of concurrency bugs:</p>
 
-<p>Those outside University of Washington Tacoma will certainly find this resource helpful, as well. All are welcome to come and learn.</p>
+<ul>
+  <li>Data Race</li>
+  <li>Deadlock</li>
+  <li>Order Violation</li>
+  <li>Suspension</li>
+  <li>Starvation</li>
+  <li>Atomicity Violation</li>
+  <li>Livelock</li>
+</ul>
 
-<p>I built this page by using <a href="https://jekyllrb.com/">Jekyll</a>, a popular static-site generator. This means I’m typing up my notes in <a href="https://daringfireball.net/projects/markdown/">Markdown</a>, which Jekyll compiles into HTML. If you want to talk about the technical details, I’d be more than happy to.</p>
+<p>An <strong>atomicity violation</strong> is when there is “[s]erialized access to shared memory among separate threads is not enforced (e.g. non-atomic).” The fix is to add locks for all uses of a shared memory resource. We can tell if a variable is shared merely by looking at the code and seeing where it is used. We should be watchful of a variable’s scope.</p>
 
-<h2 id="what-is-an-operating-system">What Is an Operating System?</h2>
+<p>An <strong>order violation</strong> is when the desired order of access is inverted. An example is assigning a value to a variable before initializing the variable. The solution is to use condition variables.</p>
 
-<p>The <strong>operating system</strong> (OS) handles the communication between input/output devices and CPU/memory. It is a resource manager that handles the hardware for one’s programs. An operating system is <em>software</em>. In one sentence, the OS is responsible for running programs, sharing memory, and interacting with devices. Many operating systems are written in <strong>C</strong>, so that’s the language we’ll be using in this class. It’s more predictable than a higher-level language like Java or Python. <a href="https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html">The GNU C Reference Manual</a> is a great resource. Here’s what a simple program in C looks like:</p>
-
-<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span>
-<span class="kt">int</span>
-<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-<span class="p">{</span>
-  <span class="n">printf</span><span class="p">(</span><span class="s">"Hello, world!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>Two other references I would recommend include <a href="https://www.cplusplus.com/reference/">this reference at cplusplus.com</a> and the <a href="http://crasseux.com/books/ctutorial/">GNU C Programming Tutorial</a>.</p>
+<p><strong>Deadlock</strong> is when all threads are blocked. “If one [thread] tries to access a resource that a second [thread] holds, and vice-versa, they can never make progress.” Deadlock arises from incorrect synchronization among a set of threads “if every [thread] is waiting for an event that can be caused only by another [thread] in the set.” The solution is to lock the locks in the same order for each thread every time.</p>
 </main>
                 <footer>
     <p>

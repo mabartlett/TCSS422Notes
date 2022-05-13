@@ -55,6 +55,12 @@
                 </a>
             </li>
         
+            <li>
+                <a href="/topics/08_problems.html">
+                    Concurrency Problems
+                </a>
+            </li>
+        
     </ul>
 </nav>
 
@@ -94,7 +100,9 @@
 
 <p>Checking for the count CV (step 2) must be within a while loop as opposed to an if statement. Why? When the thread is woken up within an if statement, it won’t check the count CV again but will instead go right to the put or get operation, even if there is no space to put or nothing to get! A while loop ensures that the condition will be checked again when the thread is woken up.</p>
 
-<p>Producer threads must signal consumers and vice-versa. The solution is to use two condition variables for the bounded buffer: one for <em>empty</em> and another for <em>full</em>. Producer threads will wait for empty and then signal for full while consumer threads wait for full and then signal on empty.</p>
+<p>Producer threads must signal consumers and vice-versa, so we should use two condition variables for the bounded buffer: one for <em>empty</em> and another for <em>full</em>. Producer threads will wait for empty and then signal on full while consumer threads wait for full and then signal on empty.</p>
+
+<p>When the buffer has a size greater than one, there are two indices: one for where elements can be inserted by the producer and another for where elements can be removed by the consumer. This is done in a ring-like fashion, which is to say that if the maximum size of the buffer is <code class="language-plaintext highlighter-rouge">MAX</code>, then the new index <code class="language-plaintext highlighter-rouge">idx</code> is <code class="language-plaintext highlighter-rouge">idx = (idx + 1) % MAX</code> where <code class="language-plaintext highlighter-rouge">%</code> is the modulo operator. A variable that contains a count of elements in the bounded buffer is also needed.</p>
 </main>
                 <footer>
     <p>
