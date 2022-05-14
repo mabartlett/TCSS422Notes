@@ -7,7 +7,7 @@ layout: default
 
 ## Locks and Critical Sections
 
-**Locks** are one way to implement critical sections. Metaphorically, a thread locks a door on the way in and then unlocks it on their way out. There are two operations associated with locks:
+**Locks** are one way to implement critical sections. Metaphorically, a thread locks a door on the way in and then unlocks it on its way out. There are two operations associated with locks:
 
 - Acquire: "Wait until the lock is free, then take it to enter a C.S."
 - Release: "Release lock to leave a C.S., waking up anyone waiting for it."
@@ -18,7 +18,7 @@ These two functions must *always* go together. Once you use acquire, you must la
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_lock(&lock);
 // Critical section code goes here.
-pthread-mutex_unlock(&lock);
+pthread_mutex_unlock(&lock);
 {% endhighlight %}
 
 The variable `lock` is either locked or unlocked. It is initialized to locked.

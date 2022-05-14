@@ -9,7 +9,7 @@ layout: default
 
 A thread must often wait for some condition to be met in another thread before proceeding with execution. "A **condition variable** (CV) is associated with a condition needed for a thread to make progress." The thread is blocked and placed in a FIFO queue before the variable is satisfied. When the variable is satisfied, a signal is emitted, which frees threads from the queue.
 
-C gives us a `pthread_cond_t` API for condition variables. There are three operations:
+C gives us a `pthread_cond_t` API for condition variables. They are initialized with `PTHREAD_COND_INITALIZER`. There are three operations:
 
 - Wait: Release the lock and wait for the CV to be signaled. The first argument is the CV itself and the second is a mutex. The mutex must be passed so that its lock can be released when the thread is dequeued.
 - Signal: Wake up the first thread waiting in the queue. Its one argument is the CV.
@@ -31,4 +31,4 @@ Checking for the count CV (step 2) must be within a while loop as opposed to an 
 
 Producer threads must signal consumers and vice-versa, so we should use two condition variables for the bounded buffer: one for *empty* and another for *full*. Producer threads will wait for empty and then signal on full while consumer threads wait for full and then signal on empty.
 
-When the buffer has a size greater than one, there are two indices: one for where elements can be inserted by the producer and another for where elements can be removed by the consumer. This is done in a ring-like fashion, which is to say that if the maximum size of the buffer is `MAX`, then the new index `idx` is `idx = (idx + 1) % MAX` where `%` is the modulo operator. A variable that contains a count of elements in the bounded buffer is also needed. 
+When the buffer has a size greater than one, there are two indices: one for where elements can be inserted by the producer and another for where elements can be removed by the consumer. This is done in a ring-like fashion, which is to say that if the maximum size of the buffer is `MAX`, then the new index `idx` is `idx = (idx + 1) % MAX` where `%` is the modulo operator. A variable that contains a count of elements in the bounded buffer is also needed.

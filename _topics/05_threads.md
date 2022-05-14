@@ -17,12 +17,12 @@ C makes use of threads with the **`pthread`** API, which is defined in `pthread.
 int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void*), void *arg);
 {% endhighlight %}
 
-- `pthread_t *thread` is the thread to we are initializing.
+- `pthread_t *thread` is the thread being initialized. It should have been declared before calling `pthread_create`.
 - `pthread_attr_t *attr` is usually `NULL`.
-- `void *(*start_routine)(void*)` is a pointer to the function the thread should start running.
-- `void *arg` is the argument to pass to the above function.
+- `void *(*start_routine)(void*)` is a pointer to the function the thread should start running. Don't get confused here. All that's needed from you is simply the name of the function.
+- `void *arg` is the argument to pass to the above function. If you want to pass more than one argument, simply put them all in a `struct`.
 
-You must join the thread later with the following function:
+If successful, the function returns 0; otherwise, it returns an error code number and `*thread` is undefined. You must join the thread later with the following function:
 
 {% highlight C %}
 int pthread_join(pthread_t thread, void **value_ptr)

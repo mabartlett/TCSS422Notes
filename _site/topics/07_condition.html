@@ -76,7 +76,7 @@
 
 <p>A thread must often wait for some condition to be met in another thread before proceeding with execution. “A <strong>condition variable</strong> (CV) is associated with a condition needed for a thread to make progress.” The thread is blocked and placed in a FIFO queue before the variable is satisfied. When the variable is satisfied, a signal is emitted, which frees threads from the queue.</p>
 
-<p>C gives us a <code class="language-plaintext highlighter-rouge">pthread_cond_t</code> API for condition variables. There are three operations:</p>
+<p>C gives us a <code class="language-plaintext highlighter-rouge">pthread_cond_t</code> API for condition variables. They are initialized with <code class="language-plaintext highlighter-rouge">PTHREAD_COND_INITALIZER</code>. There are three operations:</p>
 
 <ul>
   <li>Wait: Release the lock and wait for the CV to be signaled. The first argument is the CV itself and the second is a mutex. The mutex must be passed so that its lock can be released when the thread is dequeued.</li>

@@ -74,7 +74,7 @@
 
 <h2 id="locks-and-critical-sections">Locks and Critical Sections</h2>
 
-<p><strong>Locks</strong> are one way to implement critical sections. Metaphorically, a thread locks a door on the way in and then unlocks it on their way out. There are two operations associated with locks:</p>
+<p><strong>Locks</strong> are one way to implement critical sections. Metaphorically, a thread locks a door on the way in and then unlocks it on its way out. There are two operations associated with locks:</p>
 
 <ul>
   <li>Acquire: “Wait until the lock is free, then take it to enter a C.S.”</li>
@@ -86,7 +86,7 @@
 <figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">pthread_mutex_t</span> <span class="n">lock</span> <span class="o">=</span> <span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span>
 <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
 <span class="c1">// Critical section code goes here.</span>
-<span class="n">pthread</span><span class="o">-</span><span class="n">mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span></code></pre></figure>
+<span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span></code></pre></figure>
 
 <p>The variable <code class="language-plaintext highlighter-rouge">lock</code> is either locked or unlocked. It is initialized to locked.</p>
 
