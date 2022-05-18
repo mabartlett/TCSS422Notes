@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>TCSS 422 - Operating Systems</title>
+        <title>Memory Virtualization</title>
         <link rel="stylesheet" href=/assets/css/styles.css>
     </head>
     <body>
@@ -76,30 +76,17 @@
     <h1>Marcus's Operating System Notes</h1>
 </header>
 
-                <main><h1 id="home">Home</h1>
+                <main><h1 id="memory-virtualization">Memory Virtualization</h1>
 
-<h2 id="introduction">Introduction</h2>
+<h2 id="memory-and-processes">Memory and Processes</h2>
 
-<p>Welcome, fellow student! This page is where you’ll find the notes I’ve typed for TCSS 422 Computer Operating Systems in the Spring 2022 quarter at University of Washington Tacoma. Please refer to the footer for copyright information. I hope you’ll find this page as helpful as I do. I’ll be updating this site throughout the quarter, so check in regularly. Please do not substitute reading this page for coming to class. <strong>If you are looking for answers to the homework or quizzes, you will not find them here.</strong> Sorry, pal!</p>
+<p>We want to have many processes in memory at the same time. How do we allocate space for each process in an efficient manner?</p>
 
-<p>Those outside University of Washington Tacoma will certainly find this resource helpful, as well. All are welcome to come and learn.</p>
+<p>One requirement of memory management is safety. We don’t want a bug in one program to cause problems in another. A <strong>segmentation fault</strong> can occur when a program tries to access memory outside its own boundaries. Transparency is another requirement of memory management. Processes “shouldn’t require particular physical memory bits.” The third requirement is that resources can be exhausted and we need a sort of “safety valve” for when the memory requirements exceed the amount of physical memory.</p>
 
-<p>I built this page by using <a href="https://jekyllrb.com/">Jekyll</a>, a popular static-site generator. This means I’m typing up my notes in <a href="https://daringfireball.net/projects/markdown/">Markdown</a>, which Jekyll compiles into HTML. If you want to talk about the technical details, I’d be more than happy to.</p>
+<h2 id="virtual-addressing">Virtual Addressing</h2>
 
-<h2 id="what-is-an-operating-system">What Is an Operating System?</h2>
-
-<p>The <strong>operating system</strong> (OS) handles the communication between input/output devices and CPU/memory. It is a resource manager that handles the hardware for one’s programs. An operating system is <em>software</em>. In one sentence, the OS is responsible for running programs, sharing memory, and interacting with devices. Many operating systems are written in <strong>C</strong>, so that’s the language we’ll be using in this class. It’s more predictable than a higher-level language like Java or Python. <a href="https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html">The GNU C Reference Manual</a> is a great resource. Here’s what a simple program in C looks like:</p>
-
-<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span>
-<span class="kt">int</span>
-<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-<span class="p">{</span>
-  <span class="n">printf</span><span class="p">(</span><span class="s">"Hello, world!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>Two other references I would recommend include <a href="https://www.cplusplus.com/reference/">this reference at cplusplus.com</a> and the <a href="http://crasseux.com/books/ctutorial/">GNU C Programming Tutorial</a>.</p>
+<p>The <strong>memory-management unit</strong> (MMU) translates the virtual address to the physical address so that only the OS knows the physical address. (A “core dumped” error message means there is no corresponding physical address.) Even the CPU doesn’t know the physical address. Remember that each process gets its own virtual address space with its own space for code, data, heap and stack.</p>
 </main>
                 <footer>
     <p>

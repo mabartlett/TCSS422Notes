@@ -11,9 +11,9 @@ A thread must often wait for some condition to be met in another thread before p
 
 C gives us a `pthread_cond_t` API for condition variables. They are initialized with `PTHREAD_COND_INITALIZER`. There are three operations:
 
-- Wait: Release the lock and wait for the CV to be signaled. The first argument is the CV itself and the second is a mutex. The mutex must be passed so that its lock can be released when the thread is dequeued.
-- Signal: Wake up the first thread waiting in the queue. Its one argument is the CV.
-- Broadcast: Wake up all the threads waiting in the queue. Its one argument is the CV.
+- `pthread_cond_wait(&c, &m)` (wait): Release the lock and wait for the CV to be signaled. The first argument is the CV itself and the second is a mutex lock. The mutex must be passed so that its lock can be released when the thread is dequeued.
+- `pthread_cond_signal(&c)` (signal): Wake up the first thread waiting in the queue. Its one argument is the CV.
+- `pthread_cond_broadcast(&c)` (broadcast): Wake up all the threads waiting in the queue. Its one argument is the CV.
 
 ## Bounded Buffer
 
