@@ -97,23 +97,33 @@
 <p>In <strong>base and bounds</strong>, there are two registers on the CPU: one is “base” and the other is “bounds”. The “base” is where the memory segment begins and the “bounds” is the allowed size of the memory. They are on the PCB for the process. The algorithm is simple:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Let physical address = virtual address + base.
-If 0 ≤ virtual address &lt; bounds:
-    Continue.
-Else:
+If virtual address &lt; 0 or virtual address ≥ bounds:
     Trap to kernel.
 </code></pre></div></div>
 
 <p>We can change the base register to move processes in memory.</p>
 
-<p>The operating system maintains a <strong>free list</strong> of available memory spaces. When a process starts, the OS searches for an appropriate spot and assigns the process. When a process is terminated, the free list is updated. If the OS detects that the items in the free list is contiguous, it can be compacted into a single entry in the list. The alternate name for this algorithm is “dynamic relocation because the “OS can move process data when not running” that process.</p>
+<p>The operating system maintains a <strong>free list</strong> of available memory spaces. When a process starts, the OS searches for an appropriate spot and assigns the process. When a process is terminated, the free list is updated. If the OS detects that the items in the free list is contiguous, it can be compacted into a single entry in the list. The alternate name for this algorithm is “dynamic relocation” because the “OS can move process data when not running” that process.</p>
 
-<p>Base and bounds needs only two registers, so the hardware requirements are low, and the algorithm is computationally simple for sure. Now what are the disadvantages? One problem is that the fixed amount of memory allocated may leave too much unused free space. Another is that “[g]rowing a process is expensive or impossible” because of the requirements of moving it. There is also “[n]o way to share code or data.”</p>
+<p>Base and bounds needs only two registers, so the hardware requirements are low, and the algorithm is computationally simple for sure. Now what are the disadvantages? One problem is that the fixed amount of memory allocated may leave too much unused free space. Another is that “growing a process is expensive or impossible” because of the requirements of moving it. There is also “[n]o way to share code or data.”</p>
 
 <h3 id="segmentation">Segmentation</h3>
 
-<p><strong>Segmentation</strong> gives each address space three portions: code, stack, and heap. Each will have its own base and bounds for six total registers. Each portion need not be contiguous in physical memory. They can be separate, but virtual memory is still addressed as if the portions were contiguous. All this makes address translation a bit more complicated. Remember that the stack grows negatively! It starts at a higher address and grows to lower addresses.</p>
+<p><strong>Segmentation</strong> gives each address space three portions: code, stack, and heap. Each will have its own base and bounds for six total registers. Each portion need not be contiguous in physical memory. They can be separate, but virtual memory is still addressed as if the portions were contiguous. All this makes address translation a bit more complicated.</p>
 
-<p>Here, we address the disadvantage of base and bounds in that this algorithm allows for better sharing of memory. However, it “[r]equires translation hardware, which could limit performance” and fragmentation becomes “a real problem.”</p>
+<p>Here, we address the disadvantage of base and bounds in that this algorithm allows for better sharing of memory. However, it “requires translation hardware, which could limit performance” and fragmentation becomes “a real problem.”</p>
+
+<h3 id="paging">Paging</h3>
+
+<p>Modern operating systems utilize <strong>paging</strong>, in which memory is divided into “pages” of fixed size. This cuts down on wasted space. For each process, there is a <strong>page table</strong> that maps “virtual pages to physical <strong>page frames</strong>.” Each process takes up multiple pages in memory. Virtual pages and page frames are the exact same size in memory. Page frames need not be contiguous in physical memory.</p>
+
+<p>The typical page size is 4KB. This has been determined by experience.</p>
+
+<p>A virtual address is composed of a virtual page number (VPN) as well as an offset. The page table maps a VPN to a page frame number (PFN) or physical page number (PPN). The table is just an array and the VPN is actually just the index of the array. A page table entry (PTE) is an element in the page table. The offset value must be checked to ensure it does not go out of bounds. If it does, this is a segmentation fault.</p>
+
+<p>Paging allows for the easy allocation of memory. There is also “no need to track the direction” of the heap or stack growth. However, paging can cause “internal fragmentation,” i.e., the “process may not use memory in multiples of a page.” Another problem is that the page table is itself stored in memory, so there is an amount of “memory reference overhead” involved with retrieving it and the page table can take up quite a bit of memory. In a 32-bit system, each page table can be up to 4MB!</p>
+
+<p>So the page tables are too big. What should we do? We can make the pages larger, which reduces the number of pages; however, this means internal fragmentation becomes an even bigger problem. One thing we can do is “only map the portion memory that is actually being used.” We can use a <strong>two-level page table</strong> but modern operating systems can use up to <em>six</em> levels. Rather than pointing to a page frame, the first pointer of a virtual address points to a master page table, which points to <em>a secondary page table</em>, which provides a page frame.</p>
 </main>
                 <footer>
     <p>
@@ -131,7 +141,8 @@ Else:
     lecture slides. Please do not send the copyright police after me.
     </p>
     <p>
-        If you see any problem with this website, please email me at
+        If you see any problem with this website, no matter how trivial, please
+        email me at
         <a href="mailto:mabartlett@hotmail.com">mabartlett@hotmail.com</a>.
     </p>
 </footer>

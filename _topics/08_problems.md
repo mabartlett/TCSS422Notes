@@ -18,9 +18,7 @@ If we prevent one condition, we prevent deadlock altogether. We don't really wan
 
 No preemption can be prevented by threads not blocking when trying to acquire locks. The function `pthread_mutex_trylock()` allows a thread to try to acquire a lock only once and `pthread_mutex_timedlock()` puts lock acquisition on a sort of timer. This is our first good solution to prevent deadlock! The solution to circular wait is to lock the locks in the same order for each thread every time. Intelligent scheduling can also help us. It will schedule the execution of threads according to what locks it acquires. This isn't a very good solution because such a scheduler has to be too careful and this causes such a loss in performance that it's not worth the cost.
 
-In **detect and recover**, deadlock is allowed to occur occasionally and then some action is taken. Databases use such techniques. In a database, each user is a thread. A resource allocation graph can show where cycles appear. (I'm on my laptop, so I'm not drawing you any pictures.) If a cycle is found, the thread is forced to release the resource it's holding. The performance cost for this algorithm is quite large, so this procedure is run only sparingly. 
-
-Another solution to deadlock is to detect it during runtime.
+In **detect and recover**, deadlock is allowed to occur occasionally and then some action is taken. Databases use such techniques. In a database, each user is a thread. A resource allocation graph can show where cycles appear. (I'm on my laptop, so I'm not drawing you any pictures.) If a cycle is found, the thread is forced to release the resource it's holding. The performance cost for this algorithm is quite large, so this procedure is run only sparingly.
 
 ## Other Bugs
 

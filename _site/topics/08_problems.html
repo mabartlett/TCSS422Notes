@@ -95,8 +95,6 @@
 
 <p>In <strong>detect and recover</strong>, deadlock is allowed to occur occasionally and then some action is taken. Databases use such techniques. In a database, each user is a thread. A resource allocation graph can show where cycles appear. (I’m on my laptop, so I’m not drawing you any pictures.) If a cycle is found, the thread is forced to release the resource it’s holding. The performance cost for this algorithm is quite large, so this procedure is run only sparingly.</p>
 
-<p>Another solution to deadlock is to detect it during runtime.</p>
-
 <h2 id="other-bugs">Other Bugs</h2>
 
 <p>There are several other types of concurrency bugs:</p>
@@ -130,7 +128,8 @@
     lecture slides. Please do not send the copyright police after me.
     </p>
     <p>
-        If you see any problem with this website, please email me at
+        If you see any problem with this website, no matter how trivial, please
+        email me at
         <a href="mailto:mabartlett@hotmail.com">mabartlett@hotmail.com</a>.
     </p>
 </footer>
