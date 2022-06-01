@@ -67,6 +67,12 @@
                 </a>
             </li>
         
+            <li>
+                <a href="/topics/10_paging.html">
+                    Paging
+                </a>
+            </li>
+        
     </ul>
 </nav>
 
@@ -115,17 +121,7 @@ If virtual address &lt; 0 or virtual address ≥ bounds:
 
 <h3 id="paging">Paging</h3>
 
-<p>Modern operating systems utilize <strong>paging</strong>, in which memory is divided into “pages” of fixed size. This cuts down on wasted space. For each process, there is a <strong>page table</strong> that maps “virtual pages to physical <strong>page frames</strong>.” Each process takes up multiple pages in memory. Virtual pages and page frames are the exact same size in memory. Page frames need not be contiguous in physical memory.</p>
-
-<p>The typical page size is 4KB. This has been determined to be the best size by experience.</p>
-
-<p>A virtual address is composed of a virtual page number (VPN) as well as an offset. The page table maps a VPN to a page frame number (PFN) or physical page number (PPN). The table is just an array and the VPN is actually just the index of the array. A page table entry (PTE) is an element in the page table. The offset value must be checked to ensure it does not go out of bounds. If it does, this is a segmentation fault.</p>
-
-<p>Paging allows for the easy allocation of memory. There is also “no need to track the direction” of the heap or stack growth. However, paging can cause “internal fragmentation,” i.e., the “process may not use memory in multiples of a page.” Another problem is that the page table is itself stored in memory, so there is an amount of “memory reference overhead” involved with retrieving it and the page table can take up quite a bit of memory. In a 32-bit system, each page table can be up to 4MB!</p>
-
-<p>So the page tables are too big. What should we do? We can make the pages larger, which reduces the number of pages; however, this means internal fragmentation becomes an even bigger problem. One thing we can do is “only map the portion memory that is actually being used.” We can use a <strong>two-level page table</strong> but modern operating systems can use up to <em>six</em> levels. Rather than pointing to a page frame, the first pointer of a virtual address points to a master page table, which points to <em>a secondary page table</em>, which provides a page frame. Each level of a multi-level page table is itself divided into pages. The master page table itself ends up being only a single page.</p>
-
-<p>Multi-level page tables trade space for time because the address translation across multiple levels takes more time. The solution to this is to use a <strong>translation lookaside buffer</strong> (TLB) which is managed by the MMU and is a part of the hardware itself. It caches translations and this speeds things up <em>significantly</em>. The TLB translates virtual page numbers into PTEs rather than physical addresses. Even though only 32-128 PTEs are stored on the TLB, these PTEs can make up <em>99%</em> of translations. If there is a miss, the PTE will be stored directly on the TLB <em>and then the TLB will be queried for that entry again</em>. This means a PTE that’s on the TLB has to be “evicted.” Selecting an unlucky PTE depends on the replacement policy.</p>
+<p>The algorithm used in modern operating systems is paging, which has its very own page on this site.</p>
 </main>
                 <footer>
     <p>

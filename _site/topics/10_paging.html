@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Paging</title>
+        <link rel="stylesheet" href=/assets/css/styles.css>
+    </head>
+    <body>
+        <div class="l-flex-container">
+            <div class="l-small-column">
+                <nav>
+    <ul>
+        <li><a href="">Home</a></li>
+        
+            <li>
+                <a href="/topics/01_resource.html">
+                    Resource Sharing
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/02_processes.html">
+                    More About Processes
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/03_lde.html">
+                    Limited Direct Execution
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/04_scheduling.html">
+                    Scheduling
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/05_threads.html">
+                    Threads and Concurrency
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/06_locks.html">
+                    Locks
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/07_condition.html">
+                    Condition Variables
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/08_problems.html">
+                    Concurrency Problems
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/09_memory.html">
+                    Memory Virtualization
+                </a>
+            </li>
+        
+            <li>
+                <a href="/topics/10_paging.html">
+                    Paging
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+            </div><!-- .l-small-column -->
+            <div class="l-large-column">
+                <header>
+    <h1>Marcus's Operating System Notes</h1>
+</header>
+
+                <main><h1 id="paging">Paging</h1>
+
+<h2 id="what-is-paging">What Is Paging?</h2>
+
+<p>Modern operating systems utilize a memory virtualization technique called <strong>paging</strong>, in which memory is divided into “pages” of fixed size. This cuts down on wasted space. For each process, there is a <strong>page table</strong> that maps “virtual pages to physical <strong>page frames</strong>.” Each process takes up multiple pages in memory. Virtual pages and page frames are the exact same size in memory. Page frames need not be contiguous in physical memory.</p>
+
+<p>The typical page size is 4KB. This has been determined to be the best size by experience.</p>
+
+<p>A virtual address is composed of a virtual page number (VPN) as well as an offset. The page table maps a VPN to a page frame number (PFN) or physical page number (PPN). The table is just an array and the VPN is actually just the index of the array. A page table entry (PTE) is an element in the page table. The offset value must be checked to ensure it does not go out of bounds. If it does, this is a segmentation fault.</p>
+
+<p>Paging allows for the easy allocation of memory. There is also “no need to track the direction” of the heap or stack growth. However, paging can cause “internal fragmentation,” i.e., the “process may not use memory in multiples of a page.” Another problem is that the page table is itself stored in memory, so there is an amount of “memory reference overhead” involved with retrieving it and the page table can take up quite a bit of memory. In a 32-bit system, each page table can be up to 4MB!</p>
+
+<h2 id="multi-level-page-tables">Multi-Level Page Tables</h2>
+
+<p>So the page tables are too big. What should we do? We can make the pages larger, which reduces the number of pages; however, this means internal fragmentation becomes an even bigger problem. One thing we can do is “only map the portion memory that is actually being used.” We can use a <strong>two-level page table</strong> but modern operating systems can use up to four or five levels. Rather than pointing to a page frame, the first pointer of a virtual address points to a master page table, which points to <em>a secondary page table</em>, which provides a page frame. Each level of a multi-level page table is itself divided into pages. The master page table itself ends up being only a single page.</p>
+
+<h2 id="tlb">TLB</h2>
+
+<p>Multi-level page tables trade space for time because the address translation across multiple levels takes more time. The solution to this is to use a <strong>translation lookaside buffer</strong> (TLB) which is managed by the MMU and is a part of the hardware itself. It is on the CPU. It caches translations and this speeds things up <em>significantly</em>. The TLB translates virtual page numbers into PTEs rather than physical addresses. Even though only 32-128 PTEs are stored on the TLB, these PTEs can make up <em>99%</em> of translations. If there is a miss, the PTE will be stored directly on the TLB <em>and then the TLB will be queried for that entry again</em>. This means a PTE that’s on the TLB has to be “evicted.” Selecting an unlucky PTE depends on the replacement policy.</p>
+
+<h2 id="page-replacement">Page Replacement</h2>
+
+<p>The OS must “evict” a page at times, which is to say it must replace a page in memory with another. It sets the valid bit in the page table to “invalid” and then “stores the location of the page in the <strong>swap file</strong> in the PTE.” The swap file is information about the page stored on the hard disk. A <strong>page fault</strong> occurs when a process tries to access the page when the PTE is invalid. The OS’s page fault handler then fetches the page from the swap file on the hard disk, puts it into memory, “updates [the] PTE to point to it” and then “restarts the process.”</p>
+
+<p>Which page should be replaced in memory? There are several algorithms to determine this.</p>
+
+<h3 id="fifo">FIFO</h3>
+
+<p>In first-in, first-out (FIFO), the oldest-fetched page is evicted. However, this leads to Belady’s anomaly, in which adding more page frames does not guarantee fewer faults.</p>
+
+<h3 id="optimal-page-replacement">Optimal Page Replacement</h3>
+
+<p>In an optimal page replacement algorithm, the element that will not be used for the longest period of time is the one that should be evicted. Since it’s not possible to know the future, there is no one “optimal” algorithm, but this optimum can make a good benchmark. This theoretical optimal solution is also called “<strong>Belady’s algorithm</strong>.”</p>
+
+<h3 id="lru">LRU</h3>
+
+<p>The least recently used (LRU) algorithm approximates the optimal solution by evicting the page that has not been used in the longest period of time. (This is based on the principle that the past is like the future.) This can cause problems when there are loops because this means each consecutive memory access is a miss after the first loop. In this case, you would want an eviction policy of <em>most</em> recently used (MRU), but this can be its own can of worms.</p>
+</main>
+                <footer>
+    <p>
+    The information on this page should be distributed freely and must be used
+    for educational purposes only. While this website is wholly the creation of
+    Marcus Bartlett, all content is from Professor Juhau Hu's TCSS 422
+    class at University of Washington Tacoma during the quarter of Spring 2022.
+    Some course content is therefore adapted from the course textbook
+    <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three
+        Easy Pieces
+    </a> by Remzi and Andrea Arpaci-Dusseau
+    The header image was created by
+    <a href="https://unsplash.com/photos/jXd2FSvcRr8">Umberto</a>. Anything that
+    appears in quotation marks without citations is taken from Juhua's
+    lecture slides. Please do not send the copyright police after me.
+    </p>
+    <p>
+        If you see any problem with this website, no matter how trivial, please
+        email me at
+        <a href="mailto:mabartlett@hotmail.com">mabartlett@hotmail.com</a>.
+    </p>
+</footer>
+
+            </div><!-- l-large-column -->
+        </div><!-- .l-flex-container -->
+    </body>
+</html>
