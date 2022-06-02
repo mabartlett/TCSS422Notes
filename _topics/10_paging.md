@@ -39,4 +39,12 @@ In an optimal page replacement algorithm, the element that will not be used for 
 
 ### LRU
 
-The least recently used (LRU) algorithm approximates the optimal solution by evicting the page that has not been used in the longest period of time. (This is based on the principle that the past is like the future.) This can cause problems when there are loops because this means each consecutive memory access is a miss after the first loop. In this case, you would want an eviction policy of *most* recently used (MRU), but this can be its own can of worms.
+The least recently used (LRU) algorithm approximates the optimal solution by evicting the page that has not been used in the longest period of time. (This is based on the principle that the past is like the future.) This can cause problems when there are loops because this means each consecutive memory access is a miss after the first loop. In this case, you would want an eviction policy of *most* recently used (MRU), but this can be its own can of worms. LRU is the most commonly used algorithm in modern operating systems.
+
+Let's talk about implementations. For each PTE, you could store a timestamp, but this clearly has large space and time costs. We could also store pages in a doubly-linked list. When we access a page, we put it at the tail of the list. The head is the oldest page. This algorithm is expensive, too.
+
+Actually implementing LRU is expensive no matter what, so we merely *approximate* it with the **clock algorithm**. It uses an **A bit**, which is in the hardware. At the beginning, each page's A bit is set to 0. When a page is accessed, it is set to 1. When scanning for a page to replace, if the A bit is 1, it is then set to 0. If the next page's A bit is 0, that page is then evicted. This algorithm is also called "second-chance replacement." If there is a lot of memory, the clock can take a long time to find a page to replace, so we can use a second clock hand. One hand is the head and the other is the tail. The head sets A bits to 0 and the tail "evicts pages with A = 0." The head starts pointing to the first page allocated.
+
+Other replacement algorithms include random replacement, least-frequently-used replacement, and most-frequently-used. These are not used.
+
+You have reached the end of this website. Good luck on your final exam!
