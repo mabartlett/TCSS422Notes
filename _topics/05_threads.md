@@ -17,10 +17,10 @@ C makes use of threads with the **`pthread`** API, which is defined in `pthread.
 int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void*), void *arg);
 {% endhighlight %}
 
-- `pthread_t *thread` is the thread being initialized. It should have been declared before calling `pthread_create`. Notice that this is a *pointer*, so we need the thread's address, which means you'll want to use the `&` operator.
-- `pthread_attr_t *attr` is usually `NULL`.
-- `void *(*start_routine)(void*)` is a pointer to the function the thread should start running. Don't get confused here. All that's needed from you is simply the name of the function.
-- `void *arg` is the argument--another pointer--to pass to the above function. If you want to pass more than one argument, simply put them all in a `struct`.
+- The thread being initialized is `pthread_t *thread`. It should have been declared before you call `pthread_create`. Notice that this is a *pointer*, so we need the thread's address, which means you'll want to use the `&` operator.
+- The argument `pthread_attr_t *attr` is usually `NULL`.
+- The function will start running at `void *(*start_routine)(void*)`, which is a function pointer. Don't get confused here. All that's needed from you is simply the name of the function.
+- Passing arguments to the `start_routine` function is done with `void *arg`. If you want to pass more than one argument, simply put them all in a `struct`, make a pointer to this `struct`, and pass this pointer. (This argument is a void pointer because `start_routine` can accept any data type.)
 
 If successful, the function returns 0; otherwise, it returns an error code number and `*thread` is undefined. You must join the thread later with the following function:
 

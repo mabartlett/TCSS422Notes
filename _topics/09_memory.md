@@ -15,7 +15,7 @@ One requirement of memory management is safety. We don't want a bug in one progr
 
 The **memory-management unit** (MMU) translates the virtual address to the physical address so that only the OS knows the physical address. (A "core dumped" error message means there is no corresponding physical address.) Even the CPU doesn't know the physical address. Remember that each process gets its own virtual address space with its own space for code, data, heap and stack. Each process has the illusion of having the whole memory, but these are shadows on the cave wall.
 
-If each process has 16KB of memory, the minimum virtual address is 0, and the maximum address is (16 × 1024) - 1. The code starts at 0 and the heap starts just after and grows to the larger addresses. The stack starts at the highest address and "grows" to the lower address.
+If each process has 16KB of memory, then the minimum virtual address is 0, and the maximum address is (16 × 1024) - 1. The code starts at 0 and the heap starts just after and grows to the larger addresses. The stack starts at the highest address and "grows" negatively to the lower addresses.
 
 ## The Algorithms
 
@@ -37,7 +37,7 @@ Base and bounds needs only two registers, so the hardware requirements are low, 
 
 **Segmentation** gives each address space three portions: code, stack, and heap. Each will have its own base and bounds for six total registers. Each portion need not be contiguous in physical memory. They can be separate, but virtual memory is still addressed as if the portions were contiguous. All this makes address translation a bit more complicated.
 
-Here, we address the disadvantage of base and bounds in that this algorithm allows for better sharing of memory. However, it "requires translation hardware, which could limit performance" and fragmentation becomes "a real problem."
+Here, we address (no pun intended) the disadvantage of base and bounds in that this algorithm allows for better sharing of memory. However, it "requires translation hardware, which could limit performance." Another problem is **external fragmentation**, which is when portions of free memory are not of the size required by the allocation request.
 
 ### Paging
 

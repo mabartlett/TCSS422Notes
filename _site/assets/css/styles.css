@@ -16,7 +16,7 @@ h3 { font-weight: bold; font-size: 1.25rem; margin: 1.25rem 0; }
 
 h4, h5, h6 { font-weight: bold; font-size: 1.125rem; margin: 1.125rem 0; }
 
-p + p, p + ul, p + ol, p + dl, p + pre, ol + p, ul + p, pre + p { margin-top: 1rem; }
+p + p, p + ul, p + ol, p + dl, p + pre, ol + p, ul + p, pre + p { margin-top: 1.5rem; }
 
 strong { font-weight: bold; }
 
@@ -42,15 +42,17 @@ main a { text-decoration: underline; }
 
 main a:hover { text-decoration: none; }
 
-main h2:not(:first-of-type) { margin-top: 4rem; }
+main h2:not(:first-of-type) { margin-top: 5rem; }
 
-main p, main li { text-align: justify; hyphens: auto; line-height: 1.5rem; }
+main h3:not(:first-of-type) { margin-top: 2rem; }
+
+main p, main li { text-align: justify; hyphens: auto; line-height: 1.6rem; }
 
 main ul { list-style-type: disc; }
 
 main ol { list-style-type: decimal; }
 
-main li { list-style-position: inside; }
+main li { list-style-position: outside; margin-left: 1.5rem; margin-top: 0.3rem; margin-bottom: 0.3rem; }
 
 p code, li code { padding: 0.15rem; border-radius: 3px; border: 1px solid; }
 

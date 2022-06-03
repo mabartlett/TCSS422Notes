@@ -45,23 +45,22 @@ If you've got a shared counter, you can lock the counter when you want to increm
 
 ### Concurrent Linked List
 
-A **concurrent linked list** has a lock for the head of the linked list. Insertions are protected. Here is the procedure:
+A **concurrent linked list** has a lock for the head of the linked list. Insertions are protected. Here is the procedure for insertion:
 
-1. Lock.
-2. Allocate space in the heap for the new node.
-3. If the allocation failed, throw an error and unlock. Do not forget to unlock!
-4. Create the new node.
-5. Update the head as the new node.
-6. Unlock.
+1. Allocate space on the heap for the new node.
+2. If the allocation failed, throw an error and return.
+3. Otherwise, lock the list.
+4. Make the new node the head.
+5. Unlock the list.
 
-If it fails, return -1. If it is successful, return 0. The lookup operation works similarly: each element is locked and then is unlocked as the list is traversed. Alternatively, you can lock and unlock only the head; however, locking an entire list means users have to wait for a thread to finish with a list before performing their own operation on it. The solution is **hand-over-hand locking** in which "[t]raversal involves handing over previous node's lock, acquiring the next node's lock, and so on." This does unfortunately come at a performance cost.
+When searching the linked list for an element, each node is locked and then is unlocked as the list is traversed. Alternatively, you can lock only the head, which locks the whole list; however, locking an entire list means users have to wait for a thread to finish with a list before performing their own operation on it. The solution to this problem is **hand-over-hand locking** in which "[t]raversal involves handing over [the] previous node's lock, acquiring the next node's lock, and so on." This does unfortunately come at a performance cost.
 
 ### Michael & Scott Concurrent Queues
 
 In a **Michael and Scott concurrent queue**, there are two locks: one for the head and the other for the tail. This allows items to "be added and removed by separate threads at the same time." When we have only one item in such a queue, rather than having the head and tail point to the same node, the tail points to a dummy node. The operations enqueue and dequeue are synchronized. Here's the procedure for enqueue:
 
 1. Determine if space can be allocated for the new node.
-2. If so, create a temporary node.
+2. If so, create a new node.
 3. Lock the tail.
 4. Add this new node to the queue.
 5. Unlock the tail.
@@ -70,5 +69,6 @@ To dequeue:
 
 1. Lock the head.
 2. Make the temporary node the head.
-3. The new head is the one pointed to by the temporary node.
-4. If the new head is not `NULL`, unlock the head and free the temporary node.
+3. The new head of the list is the one pointed to by the temporary node.
+4. If the new head is `NULL`, unlock the head and return -1.
+4. Otherwise, unlock the head, free the temporary node, and return 0.

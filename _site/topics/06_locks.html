@@ -124,18 +124,17 @@
 
 <h3 id="concurrent-linked-list">Concurrent Linked List</h3>
 
-<p>A <strong>concurrent linked list</strong> has a lock for the head of the linked list. Insertions are protected. Here is the procedure:</p>
+<p>A <strong>concurrent linked list</strong> has a lock for the head of the linked list. Insertions are protected. Here is the procedure for insertion:</p>
 
 <ol>
-  <li>Lock.</li>
-  <li>Allocate space in the heap for the new node.</li>
-  <li>If the allocation failed, throw an error and unlock. Do not forget to unlock!</li>
-  <li>Create the new node.</li>
-  <li>Update the head as the new node.</li>
-  <li>Unlock.</li>
+  <li>Allocate space on the heap for the new node.</li>
+  <li>If the allocation failed, throw an error and return.</li>
+  <li>Otherwise, lock the list.</li>
+  <li>Make the new node the head.</li>
+  <li>Unlock the list.</li>
 </ol>
 
-<p>If it fails, return -1. If it is successful, return 0. The lookup operation works similarly: each element is locked and then is unlocked as the list is traversed. Alternatively, you can lock and unlock only the head; however, locking an entire list means users have to wait for a thread to finish with a list before performing their own operation on it. The solution is <strong>hand-over-hand locking</strong> in which “[t]raversal involves handing over previous node’s lock, acquiring the next node’s lock, and so on.” This does unfortunately come at a performance cost.</p>
+<p>When searching the linked list for an element, each node is locked and then is unlocked as the list is traversed. Alternatively, you can lock only the head, which locks the whole list; however, locking an entire list means users have to wait for a thread to finish with a list before performing their own operation on it. The solution to this problem is <strong>hand-over-hand locking</strong> in which “[t]raversal involves handing over [the] previous node’s lock, acquiring the next node’s lock, and so on.” This does unfortunately come at a performance cost.</p>
 
 <h3 id="michael--scott-concurrent-queues">Michael &amp; Scott Concurrent Queues</h3>
 
@@ -143,7 +142,7 @@
 
 <ol>
   <li>Determine if space can be allocated for the new node.</li>
-  <li>If so, create a temporary node.</li>
+  <li>If so, create a new node.</li>
   <li>Lock the tail.</li>
   <li>Add this new node to the queue.</li>
   <li>Unlock the tail.</li>
@@ -154,8 +153,9 @@
 <ol>
   <li>Lock the head.</li>
   <li>Make the temporary node the head.</li>
-  <li>The new head is the one pointed to by the temporary node.</li>
-  <li>If the new head is not <code class="language-plaintext highlighter-rouge">NULL</code>, unlock the head and free the temporary node.</li>
+  <li>The new head of the list is the one pointed to by the temporary node.</li>
+  <li>If the new head is <code class="language-plaintext highlighter-rouge">NULL</code>, unlock the head and return -1.</li>
+  <li>Otherwise, unlock the head, free the temporary node, and return 0.</li>
 </ol>
 </main>
                 <footer>
