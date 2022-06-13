@@ -57,7 +57,7 @@ When searching the linked list for an element, each node is locked and then is u
 
 ### Michael & Scott Concurrent Queues
 
-In a **Michael and Scott concurrent queue**, there are two locks: one for the head and the other for the tail. This allows items to "be added and removed by separate threads at the same time." When we have only one item in such a queue, rather than having the head and tail point to the same node, the tail points to a dummy node. The operations enqueue and dequeue are synchronized. Here's the procedure for enqueue:
+In a **Michael and Scott concurrent queue**, there are two locks: one for the head and the other for the tail. This allows items to "be added and removed by separate threads at the same time." A dummy node separates the head and tail operations. The operations enqueue and dequeue are synchronized. Here's the procedure for enqueue:
 
 1. Determine if space can be allocated for the new node.
 2. If so, create a new node.

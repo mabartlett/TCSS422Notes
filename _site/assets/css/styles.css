@@ -32,6 +32,8 @@ a { color: inherit; text-decoration: none; }
 
 nav li a { text-align: center; display: block; width: 100%; padding: 1rem; box-sizing: border-box; border-top: 1px solid; border-bottom: 1px solid; }
 
+.back-to-top { display: none; position: fixed; right: 0; top: 1rem; font-size: 2.5rem; cursor: pointer; padding: 0.25rem; border-radius: 1rem 0 0 1rem; }
+
 header { padding: 2rem; border-bottom: 1px solid; }
 
 header h1 { font-weight: normal; font-family: "courier new", monospace; margin: 0; }
@@ -60,7 +62,7 @@ footer { font-size: 0.8rem; line-height: 0.9rem; padding: 2rem; border-top: 1px 
 
 footer a { text-decoration: underline; }
 
-@media screen and (max-width: 900px) { html { font-size: 18px; } .l-flex-container { flex-wrap: wrap; } .l-small-column { width: 100%; flex-shrink: 0; box-sizing: border-box; border-left: 0; border-right: 0; } .l-large-column { border-right: 0; min-height: 100vh; } }
+@media screen and (max-width: 900px) { html { font-size: 18px; } .l-flex-container { flex-wrap: wrap; } .l-small-column { width: 100%; flex-shrink: 0; box-sizing: border-box; border-left: 0; border-right: 0; } .l-large-column { border-right: 0; min-height: 100vh; } .back-to-top { display: block; } }
 
 @media screen and (max-width: 600px) { html { font-size: 16px; } main { padding: 1rem; } footer { padding: 1rem; } }
 
@@ -87,6 +89,8 @@ header h1 { color: #00ff00; text-shadow: 0 0 5px #000000; }
 nav li a { border-top-color: #404040; border-bottom-color: #202020; background-color: #303030; }
 
 nav li a:hover { background-color: #383838; text-decoration: underline; }
+
+.back-to-top { background-color: #383838; color: #ffffff; border: 1px solid #404040; border-right: 0; }
 
 footer { border-color: #404040; color: #d0d0d0; }
 

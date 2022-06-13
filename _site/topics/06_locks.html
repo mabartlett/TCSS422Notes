@@ -76,6 +76,8 @@
     </ul>
 </nav>
 
+<button class="back-to-top">⇧</button>
+
             </div><!-- .l-small-column -->
             <div class="l-large-column">
                 <header>
@@ -138,7 +140,7 @@
 
 <h3 id="michael--scott-concurrent-queues">Michael &amp; Scott Concurrent Queues</h3>
 
-<p>In a <strong>Michael and Scott concurrent queue</strong>, there are two locks: one for the head and the other for the tail. This allows items to “be added and removed by separate threads at the same time.” When we have only one item in such a queue, rather than having the head and tail point to the same node, the tail points to a dummy node. The operations enqueue and dequeue are synchronized. Here’s the procedure for enqueue:</p>
+<p>In a <strong>Michael and Scott concurrent queue</strong>, there are two locks: one for the head and the other for the tail. This allows items to “be added and removed by separate threads at the same time.” A dummy node separates the head and tail operations. The operations enqueue and dequeue are synchronized. Here’s the procedure for enqueue:</p>
 
 <ol>
   <li>Determine if space can be allocated for the new node.</li>
@@ -167,7 +169,7 @@
     Some course content is therefore adapted from the course textbook
     <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/">Operating Systems: Three
         Easy Pieces
-    </a> by Remzi and Andrea Arpaci-Dusseau
+    </a> by Remzi and Andrea Arpaci-Dusseau.
     The header image was created by
     <a href="https://unsplash.com/photos/jXd2FSvcRr8">Umberto</a>. Anything that
     appears in quotation marks without citations is taken from Juhua's
@@ -183,4 +185,5 @@
             </div><!-- l-large-column -->
         </div><!-- .l-flex-container -->
     </body>
+    <script defer src=/assets/js/backToTop.js></script>
 </html>

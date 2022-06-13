@@ -31,7 +31,7 @@ We can change the base register to move processes in memory.
 
 The operating system maintains a **free list** of available memory spaces. When a process starts, the OS searches for an appropriate spot and assigns the process. When a process is terminated, the free list is updated. If the OS detects that the items in the free list is contiguous, it can be compacted into a single entry in the list. The alternate name for this algorithm is "dynamic relocation" because the "OS can move process data when not running" that process.
 
-Base and bounds needs only two registers, so the hardware requirements are low, and the algorithm is computationally simple for sure. Now what are the disadvantages? One problem is that the fixed amount of memory allocated may leave too much unused free space. Another is that "growing a process is expensive or impossible" because of the requirements of moving it. There is also "[n]o way to share code or data."
+Base and bounds needs only two registers, so the hardware requirements are low, and the algorithm is computationally simple for sure. Now what are the disadvantages? One problem is that the fixed amount of memory allocated may take up too much unused free space. Another is that "growing a process is expensive or impossible" because of the requirements of moving it. There is also "[n]o way to share code or data."
 
 ### Segmentation
 

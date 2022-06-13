@@ -68,6 +68,13 @@ nav li a:hover {
     text-decoration: underline;
 }
 
+.back-to-top {
+    background-color: #383838;
+    color: #ffffff;
+    border: 1px solid $border-color;
+    border-right: 0;
+}
+
 footer {
     border-color: $border-color;
     color: #d0d0d0;
