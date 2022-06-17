@@ -7,8 +7,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ page.title }}</title>
-        <link rel="stylesheet" href={{"/assets/css/styles.css" |
-                relative_url }}>
+        <link rel="stylesheet" href="{{ "/assets/css/styles.css" | relative_url }}">
     </head>
     <body>
         <div class="l-flex-container">
@@ -21,6 +20,7 @@
                 {% include footer.html %}
             </div><!-- l-large-column -->
         </div><!-- .l-flex-container -->
+        <script defer src="{{ "/assets/js/backToTop.js" | relative_url }}">
+        </script>
     </body>
-    <script defer src={{ "/assets/js/backToTop.js" | relative_url }}></script>
 </html>
